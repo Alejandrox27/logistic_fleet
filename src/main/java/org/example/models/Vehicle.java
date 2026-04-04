@@ -76,5 +76,18 @@ public abstract class Vehicle {
         this.load_capacity = load_capacity;
     }
 
+    @Override
+    public String toString() {
+        return "Vehicle [" +
+                "ID: " + id_vehicle +
+                " | Plate: '" + number_plate + '\'' +
+                " | Brand: '" + brand + '\'' +
+                " | Model: " + model +
+                " | Load Cap: " + load_capacity + "kg" +
+                " | Mileage: " + mileage + "km" +
+                " | Maintenances: " + maintenanceHistory.size() +
+                " | Total Maint. Cost: $" + getTotalMaintenanceCost() +
+                ']';
+    }
 
 }
