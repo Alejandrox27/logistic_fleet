@@ -1,5 +1,8 @@
 package org.example.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Vehicle {
     private int id_vehicle;
     private String number_plate;
@@ -7,6 +10,7 @@ public abstract class Vehicle {
     private int model;
     private int load_capacity;
     private int mileage;
+    private List<Maintenance> maintenanceHistory;
 
     public Vehicle (int id_vehicle, String number_plate, String brand, int model, int load_capacity, int mileage) {
         this.id_vehicle = id_vehicle;
@@ -15,9 +19,27 @@ public abstract class Vehicle {
         this.model = model;
         this.load_capacity = load_capacity;
         this.mileage = mileage;
+        this.maintenanceHistory = new ArrayList<>();
     }
 
     public abstract double calculateToll ();
+
+    public List<Maintenance> getMaintenanceHistory() {
+        return maintenanceHistory;
+    }
+
+    public void addMaintenance (Maintenance maintenance) {
+        this.maintenanceHistory.add(maintenance);
+    }
+
+    public double getTotalMaintenanceCost() {
+        int totalMaintenanceCost = 0;
+        for (Maintenance m: maintenanceHistory) {
+            totalMaintenanceCost += m.getCost();
+        }
+
+        return totalMaintenanceCost;
+    }
     //--- GETTERS ---
 
     public int getId_vehicle() {
