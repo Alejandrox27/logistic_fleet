@@ -2,7 +2,7 @@ package org.example.models;
 
 import java.time.LocalDate;
 
-public class Routes {
+public class Route {
     private int id_route;
     private String origin;
     private String destination;
@@ -13,8 +13,8 @@ public class Routes {
     private Driver driver;
 
     // --- CONSTRUCTOR ---
-    public Routes(int id_route, String origin, String destination, int distance,
-                  int fuel_consumed, LocalDate travelDate, Vehicle vehicle, Driver driver) {
+    public Route(int id_route, String origin, String destination, int distance,
+                 int fuel_consumed, LocalDate travelDate, Vehicle vehicle, Driver driver) {
         this.id_route = id_route;
         this.origin = origin;
         this.destination = destination;
