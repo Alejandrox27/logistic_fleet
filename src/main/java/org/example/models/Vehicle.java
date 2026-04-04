@@ -1,6 +1,6 @@
 package org.example.models;
 
-public class Vehicle {
+public abstract class Vehicle {
     private int id_vehicle;
     private String number_plate;
     private String brand;
