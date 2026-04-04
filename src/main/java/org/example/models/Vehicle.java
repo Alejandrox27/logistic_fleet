@@ -16,6 +16,8 @@ public abstract class Vehicle {
         this.load_capacity = load_capacity;
         this.mileage = mileage;
     }
+
+    public abstract double calculateToll ();
     //--- GETTERS ---
 
     public int getId_vehicle() {
