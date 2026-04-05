@@ -10,15 +10,19 @@ public abstract class Vehicle {
     private int model;
     private int load_capacity;
     private int mileage;
+    private int axles;
+    private String fuelType;
     private List<Maintenance> maintenanceHistory;
 
-    public Vehicle (int id_vehicle, String number_plate, String brand, int model, int load_capacity, int mileage) {
+    public Vehicle (int id_vehicle, String number_plate, String brand, int model, int load_capacity, int mileage, int axles, String fuelType) {
         this.id_vehicle = id_vehicle;
         this.number_plate = number_plate;
         this.brand = brand;
         this.model = model;
         this.load_capacity = load_capacity;
         this.mileage = mileage;
+        this.axles = axles;
+        this.fuelType = fuelType;
         this.maintenanceHistory = new ArrayList<>();
     }
 
@@ -66,6 +70,14 @@ public abstract class Vehicle {
         return mileage;
     }
 
+    public int getAxles () {
+        return axles;
+    }
+
+    public String getFuelType() {
+        return fuelType;
+    }
+
     // --- SETTERS ---
 
     public void setMileage(int mileage) {
@@ -75,6 +87,15 @@ public abstract class Vehicle {
     public void setLoad_capacity(int load_capacity) {
         this.load_capacity = load_capacity;
     }
+
+    public void setAxles(int axles) {
+        this.axles = axles;
+    }
+
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
+
 
     @Override
     public String toString() {
