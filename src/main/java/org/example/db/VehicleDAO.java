@@ -18,7 +18,7 @@ public class VehicleDAO {
         String sql = "SELECT * FROM Vehicles v " +
                 "LEFT JOIN maintenances m ON v.id_vehicle = m.id_vehicle";
 
-        try (java.sql.Connection conn = Connection.getConnection();
+        try (Connection conn = Connection_db.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -72,7 +72,7 @@ public class VehicleDAO {
 
             }
         } catch (SQLException e) {
-            System.out.println("Something went wrong: " + e);
+            System.out.println("Something went wrong: " + e.getMessage());
         }
 
         return new ArrayList<>(vehicleMap.values());
