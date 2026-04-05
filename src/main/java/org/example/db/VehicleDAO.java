@@ -18,7 +18,7 @@ public class VehicleDAO {
         String sql = "SELECT * FROM Vehicles v " +
                 "LEFT JOIN maintenances m ON v.id_vehicle = m.id_vehicle";
 
-        try (Connection conn = connection.getConnection();
+        try (java.sql.Connection conn = Connection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
