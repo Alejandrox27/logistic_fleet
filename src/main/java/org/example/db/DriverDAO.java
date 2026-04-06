@@ -56,7 +56,7 @@ public class DriverDAO {
                             d
                     );
 
-                    d.setLicense(driverLicense);
+                    d.addLicense(driverLicense);
                 }
             }
 

@@ -1,6 +1,7 @@
 package org.example.models;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Driver {
     private int id_driver;
@@ -9,7 +10,7 @@ public class Driver {
     private String lastName;
     private String secondLastName;
     private LocalDate contratationDate;
-    private DriverLicense license;
+    private List<DriverLicense> licenses;
 
     public Driver(int id_driver, int num_identification, String name, String lastName,
                   String secondLastName, LocalDate contratationDate) {
@@ -47,8 +48,8 @@ public class Driver {
         return contratationDate;
     }
 
-    public DriverLicense getLicense() {
-        return license;
+    public List<DriverLicense> getLicenses() {
+        return licenses;
     }
 
     // --- SETTERS ---
@@ -65,7 +66,7 @@ public class Driver {
         this.secondLastName = secondLastName;
     }
 
-    public void setLicense(DriverLicense license) {
-        this.license = license;
+    public void addLicense(DriverLicense license) {
+        this.licenses.add(license);
     }
 }
