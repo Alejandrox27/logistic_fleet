@@ -4,6 +4,7 @@ import org.example.models.DeliveryVan;
 import org.example.models.HeavyTruck;
 import org.example.models.Maintenance;
 import org.example.models.Vehicle;
+import org.example.models.dto.EfficiencyReportDTO;
 
 import java.sql.*;
 import java.util.ArrayList;

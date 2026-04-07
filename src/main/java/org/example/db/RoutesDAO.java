@@ -2,6 +2,7 @@ package org.example.db;
 
 import org.example.models.*;
 import org.example.models.Driver;
+import org.example.models.dto.EfficiencyReportDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -74,4 +75,38 @@ public class RoutesDAO {
 
         return routesList;
     }
+
+    public List<EfficiencyReportDTO> getEfficiencyReport () {
+        List<EfficiencyReportDTO> reportDTOList = new ArrayList<>();
+        String sql = "SELECT d.name, " +
+                "v.brand, " +
+                "v.model, " +
+                "AVG(r.fuel_consumed / r.distance) AS efficiency_average, " +
+                "COUNT(r.id_route) AS total_routes " +
+                "FROM routes r " +
+                "INNER JOIN vehicles v ON r.id_vehicle = v.id_vehicle " +
+                "INNER JOIN drivers d ON r.id_driver = d.id_driver " +
+                "GROUP BY d.id_driver, v.id_vehicle " +
+                "HAVING total_routes > 5";
+
+        try (Connection conn = Connection_db.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                reportDTOList.add(new EfficiencyReportDTO(
+                        rs.getString("name"),
+                        rs.getString("brand"),
+                        rs.getInt("model"),
+                        rs.getDouble("efficiency_average"),
+                        rs.getInt("total_routes")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return reportDTOList;
+    }
+    
 }
