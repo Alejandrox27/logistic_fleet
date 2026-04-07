@@ -3,11 +3,8 @@ package org.example.db;
 import org.example.models.Driver;
 import org.example.models.DriverLicense;
 
-import java.sql.Connection;
+import java.sql.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,5 +62,55 @@ public class DriverDAO {
         }
 
         return new ArrayList<>(driverMap.values());
+    }
+
+    public Driver getDriverById(int id_driver) {
+        Driver driver = null;
+
+        String sql = "SELECT * FROM drivers d " +
+                "LEFT JOIN driver_licenses dl ON d.id_driver = dl.id_driver " +
+                "LEFT JOIN license_categories lc ON dl.id_category = lc.id_category " +
+                "WHERE d.id_driver = ?";
+        try (Connection conn = Connection_db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id_driver);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    if (driver == null) {
+                        driver = new Driver(
+                                rs.getInt("id_driver"),
+                                rs.getInt("num_identification"),
+                                rs.getString("name"),
+                                rs.getString("lastname"),
+                                rs.getString("second_lastname"),
+                                rs.getDate("contratation_date").toLocalDate()
+                        );
+                    }
+                    int idLicense = rs.getInt("id_license");
+
+                    if (idLicense > 0) {
+                        DriverLicense driverLicense = new DriverLicense(
+                                idLicense,
+                                rs.getDate("issue_date").toLocalDate(),
+                                rs.getDate("expiry_date").toLocalDate(),
+                                rs.getString("description"),
+                                rs.getString("category_name"),
+                                driver
+                        );
+
+                        driver.addLicense(driverLicense);
+                    }
+
+                }
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return driver;
     }
 }
