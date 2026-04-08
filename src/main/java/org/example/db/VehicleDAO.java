@@ -5,6 +5,7 @@ import org.example.models.HeavyTruck;
 import org.example.models.Maintenance;
 import org.example.models.Vehicle;
 import org.example.models.dto.EfficiencyReportDTO;
+import org.example.models.dto.VehiclesRiskDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -142,5 +143,36 @@ public class VehicleDAO {
         }
 
         return v;
+    }
+
+    public List<VehiclesRiskDTO> getVehiclesWithRisk () {
+        List<VehiclesRiskDTO> vehiclesRiskDTOList = null;
+
+        String sql = "SELECT d.id_driver, d.name, d.lastname, SUM(r.distance) AS total_mileage " +
+                "FROM drivers d " +
+                "INNER JOIN routes r ON d.id_driver = r.id_driver " +
+                "GROUP BY d.id_driver " +
+                "HAVING total_mileage > 2000 " +
+                "ORDER BY total_mileage DESC";
+
+        try (Connection conn = Connection_db.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                vehiclesRiskDTOList.add(new VehiclesRiskDTO(
+                        rs.getInt("id_vehicle"),
+                        rs.getString("number_plate"),
+                        rs.getString("brand"),
+                        rs.getDouble("total_spent"),
+                        rs.getDouble("risk_threshold")
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return vehiclesRiskDTOList;
     }
 }
