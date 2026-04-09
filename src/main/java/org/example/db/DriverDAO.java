@@ -6,6 +6,9 @@ import org.example.models.dto.DriverFatigueDTO;
 
 import java.sql.*;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -145,4 +148,86 @@ public class DriverDAO {
 
         return DriversReportList;
     }
+
+    public List<Driver> GetDriversNotActiveMonth () {
+        List<Driver> driverList = new ArrayList<>();
+
+        String sql = "SELECT *\n" +
+                "FROM drivers d\n" +
+                "WHERE d.id_driver NOT IN (\n" +
+                "\tSELECT id_driver\n" +
+                "    FROM routes\n" +
+                "    WHERE travel_date BETWEEN ? AND ?\n" +
+                ")";
+
+        LocalDate firstDay = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate lastDay = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+
+        try (Connection conn = Connection_db.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setDate(1, java.sql.Date.valueOf(firstDay));
+            pstmt.setDate(2, java.sql.Date.valueOf(lastDay));
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    driverList.add(new Driver(
+                            rs.getInt("id_driver"),
+                            rs.getInt("num_identification"),
+                            rs.getString("name"),
+                            rs.getString("lastname"),
+                            rs.getString("second_lastname"),
+                            rs.getDate("contratation_date").toLocalDate()
+                    ));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return driverList;
+    }
+
+    public List<Driver> GetDriversNotActiveMonth (int month, int year) {
+        List<Driver> driverList = new ArrayList<>();
+
+        String sql = "SELECT *\n" +
+                "FROM drivers d\n" +
+                "WHERE d.id_driver NOT IN (\n" +
+                "\tSELECT id_driver\n" +
+                "    FROM routes\n" +
+                "    WHERE travel_date BETWEEN ? AND ?\n" +
+                ")";
+
+        LocalDate firstDay = YearMonth.of(year, month).atDay(1);
+        LocalDate lastDay = firstDay.with(TemporalAdjusters.lastDayOfMonth());
+
+
+        try (Connection conn = Connection_db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setDate(1, java.sql.Date.valueOf(firstDay));
+            pstmt.setDate(2, java.sql.Date.valueOf(lastDay));
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    driverList.add(new Driver(
+                            rs.getInt("id_driver"),
+                            rs.getInt("num_identification"),
+                            rs.getString("name"),
+                            rs.getString("lastname"),
+                            rs.getString("second_lastname"),
+                            rs.getDate("contratation_date").toLocalDate()
+                    ));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return driverList;
+    }
+
 }
