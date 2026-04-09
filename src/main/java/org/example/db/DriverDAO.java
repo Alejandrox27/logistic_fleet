@@ -122,7 +122,7 @@ public class DriverDAO {
         String sql = "SELECT d.id_driver, d.name, d.lastname, SUM(r.distance) AS total_mileage " +
                 "FROM drivers d " +
                 "INNER JOIN routes r ON d.id_driver = r.id_driver " +
-                "GROUP BY d.id_driver " +
+                "GROUP BY d.id_driver, d.name, d.lastname " +
                 "HAVING total_mileage > 2000 " +
                 "ORDER BY total_mileage DESC";
 

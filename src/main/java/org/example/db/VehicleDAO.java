@@ -4,7 +4,7 @@ import org.example.models.DeliveryVan;
 import org.example.models.HeavyTruck;
 import org.example.models.Maintenance;
 import org.example.models.Vehicle;
-import org.example.models.dto.EfficiencyReportDTO;
+import org.example.models.dto.MostWastefulBrandsDTO;
 import org.example.models.dto.VehiclesRiskDTO;
 
 import java.sql.*;
@@ -174,5 +174,32 @@ public class VehicleDAO {
         }
 
         return vehiclesRiskDTOList;
+    }
+
+    public List<MostWastefulBrandsDTO> getRankingMostWastefulBrands () {
+        List<MostWastefulBrandsDTO> MostWastefulBrandsList = new ArrayList<>();
+
+        /*RANKING DE MARCAS MAS GASTONAS*/
+        String sql = "SELECT v.brand, ROUND(AVG(r.fuel_consumed / r.distance), 2) AS average_fuel_consumed\n" +
+                "FROM vehicles v\n" +
+                "INNER JOIN routes r ON  v.id_vehicle = r.id_vehicle\n" +
+                "GROUP BY v.brand\n" +
+                "ORDER BY average_fuel_consumed DESC";
+
+        try (Connection conn = Connection_db.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                MostWastefulBrandsList.add(new MostWastefulBrandsDTO(
+                        rs.getString("brand"),
+                        rs.getDouble("average_fuel_consumed")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return MostWastefulBrandsList;
     }
 }
