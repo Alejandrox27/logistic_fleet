@@ -2,6 +2,7 @@ package org.example.db;
 
 import org.example.models.Driver;
 import org.example.models.DriverLicense;
+import org.example.models.dto.DriverFatigueDTO;
 
 import java.sql.*;
 
@@ -112,5 +113,36 @@ public class DriverDAO {
         }
 
         return driver;
+    }
+
+    public List<DriverFatigueDTO> getReportDriverFatigue () {
+        List<DriverFatigueDTO> DriversReportList = new ArrayList<>();
+
+        /*sql driver fatigue*/
+        String sql = "SELECT d.id_driver, d.name, d.lastname, SUM(r.distance) AS total_mileage " +
+                "FROM drivers d " +
+                "INNER JOIN routes r ON d.id_driver = r.id_driver " +
+                "GROUP BY d.id_driver " +
+                "HAVING total_mileage > 2000 " +
+                "ORDER BY total_mileage DESC";
+
+        try (Connection conn = Connection_db.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)
+        ) {
+
+            while (rs.next()) {
+                DriversReportList.add(new DriverFatigueDTO(
+                        rs.getInt("id_driver"),
+                        rs.getString("name"),
+                        rs.getString("lastname"),
+                        rs.getDouble("total_mileage")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return DriversReportList;
     }
 }
