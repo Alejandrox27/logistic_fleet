@@ -5,6 +5,7 @@ import org.example.models.HeavyTruck;
 import org.example.models.Maintenance;
 import org.example.models.Vehicle;
 import org.example.models.dto.MostWastefulBrandsDTO;
+import org.example.models.dto.VehicleOperatingCostDTO;
 import org.example.models.dto.VehicleVersatilityDTO;
 import org.example.models.dto.VehiclesRiskDTO;
 
@@ -231,5 +232,44 @@ public class VehicleDAO {
         }
 
         return mostVersatile;
+    }
+
+    public List<VehicleOperatingCostDTO> getReportOperatingCosts() {
+        List<VehicleOperatingCostDTO> report = new ArrayList<>();
+
+        String sql = "SELECT v.id_vehicle, v.brand, v.number_plate, " +
+                "COALESCE(route_costs.total_fuel, 0) AS costs_fuel, " +
+                "COALESCE(maintenances_costs.total_maintenances, 0) AS all_maintenances_costs, " +
+                "(COALESCE(route_costs.total_fuel, 0) + COALESCE(maintenances_costs.total_maintenances, 0)) AS total_operating_cost " +
+                "FROM vehicles v " +
+                "LEFT JOIN ( " +
+                "    SELECT id_vehicle, SUM(fuel_consumed * 15000) AS total_fuel " +
+                "    FROM routes GROUP BY id_vehicle " +
+                ") AS route_costs ON v.id_vehicle = route_costs.id_vehicle " +
+                "LEFT JOIN ( " +
+                "    SELECT id_vehicle, SUM(cost) AS total_maintenances " +
+                "    FROM maintenances GROUP BY id_vehicle " +
+                ") AS maintenances_costs ON v.id_vehicle = maintenances_costs.id_vehicle " +
+                "ORDER BY total_operating_cost DESC";
+
+        try (Connection conn = Connection_db.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                report.add(new VehicleOperatingCostDTO(
+                        rs.getInt("id_vehicle"),
+                        rs.getString("brand"),
+                        rs.getString("number_plate"),
+                        rs.getDouble("costs_fuel"),
+                        rs.getDouble("all_maintenances_costs"),
+                        rs.getDouble("total_operating_cost")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al generar reporte de costos operativos: " + e.getMessage());
+        }
+
+        return report;
     }
 }
