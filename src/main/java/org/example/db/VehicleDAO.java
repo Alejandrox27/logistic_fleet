@@ -5,6 +5,7 @@ import org.example.models.HeavyTruck;
 import org.example.models.Maintenance;
 import org.example.models.Vehicle;
 import org.example.models.dto.MostWastefulBrandsDTO;
+import org.example.models.dto.VehicleVersatilityDTO;
 import org.example.models.dto.VehiclesRiskDTO;
 
 import java.sql.*;
@@ -201,5 +202,34 @@ public class VehicleDAO {
         }
 
         return MostWastefulBrandsList;
+    }
+
+    public VehicleVersatilityDTO getMostVersatileVehicle() {
+        VehicleVersatilityDTO mostVersatile = null;
+
+        String sql = "SELECT v.id_vehicle, v.brand, v.model, COUNT(DISTINCT r.destination) AS visited_places " +
+                "FROM vehicles v " +
+                "INNER JOIN routes r ON v.id_vehicle = r.id_vehicle " +
+                "GROUP BY v.id_vehicle, v.brand, v.model " +
+                "ORDER BY visited_places DESC " +
+                "LIMIT 1";
+
+        try (Connection conn = Connection_db.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                mostVersatile = new VehicleVersatilityDTO(
+                        rs.getInt("id_vehicle"),
+                        rs.getString("brand"),
+                        rs.getString("model"),
+                        rs.getInt("visited_places")
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Error en reporte de versatilidad: " + e.getMessage());
+        }
+
+        return mostVersatile;
     }
 }
