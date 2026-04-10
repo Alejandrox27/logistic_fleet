@@ -7,26 +7,36 @@ import org.example.Exceptions.VehicleExceptions.VehicleNotAvailableException;
 import org.example.db.DriverDAO;
 import org.example.db.RoutesDAO;
 import org.example.db.VehicleDAO;
+import org.example.models.Driver;
+import org.example.models.DriverStatus;
 import org.example.models.Route;
 import org.example.models.VehicleStatus;
 import org.example.models.dto.DriverFatigueDTO;
 
 public class RouteService {
-    public String createRoute(Route route) throws VehicleException, DriverFatigueException {
-        VehicleStatus currentStatus = VehicleDAO.checkDisponibility(route.getVehicle().getIdVehicle());
+    public String createRoute(Route route) throws VehicleException, DriverException {
+        VehicleStatus currentStatusVehicle = VehicleDAO.checkDisponibility(route.getVehicle().getIdVehicle());
         DriverFatigueDTO driver = DriverDAO.getReportDriverFatigue(route.getDriver().getIdDriver());
+        DriverStatus currentStatusDriver = DriverDAO.checkDisponibility(route.getDriver().getIdDriver());
 
-        if (currentStatus == null) {
+        if (currentStatusVehicle == null) {
             throw new VehicleException("The vehicle doesn't exist.");
         }
 
-        if (currentStatus != VehicleStatus.AVAILABLE) {
-            throw new VehicleNotAvailableException(currentStatus);
+        if (currentStatusVehicle != VehicleStatus.AVAILABLE) {
+            throw new VehicleNotAvailableException(currentStatusVehicle);
         }
 
         if (driver != null) {
             throw new DriverFatigueException(driver);
         }
+
+        if (currentStatusDriver == null) {
+            throw new DriverException("The Driver doesn't exists");
+        }
+
+
+
 
         RoutesDAO.saveRoute(route);
         return "Route created successfully!";
