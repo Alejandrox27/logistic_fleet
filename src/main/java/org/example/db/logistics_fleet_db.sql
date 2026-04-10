@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-04-2026 a las 17:13:41
+-- Tiempo de generación: 09-04-2026 a las 05:35:10
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -32,39 +32,40 @@ CREATE TABLE `drivers` (
   `num_identification` int(15) NOT NULL,
   `name` varchar(50) NOT NULL,
   `lastname` varchar(50) NOT NULL,
-  `secondLastname` varchar(50) DEFAULT NULL,
-  `contratationDate` date DEFAULT NULL
+  `second_lastname` varchar(50) DEFAULT NULL,
+  `contratation_date` date DEFAULT NULL,
+  `status` enum('AVAILABLE','IN_ROUTE','OFF_DUTY') DEFAULT 'AVAILABLE'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `drivers`
 --
 
-INSERT INTO `drivers` (`id_driver`, `num_identification`, `name`, `lastname`, `secondLastname`, `contratationDate`) VALUES
-(1, 10123456, 'Andrés', 'García', 'López', '2022-01-10'),
-(2, 10234567, 'Beatriz', 'Mendoza', 'Pérez', '2022-03-15'),
-(3, 10345678, 'Camilo', 'Torres', 'Rojas', '2022-06-20'),
-(4, 10456789, 'Diana', 'Ramírez', 'Cano', '2022-08-05'),
-(5, 10567890, 'Esteban', 'Quintero', 'Mejía', '2022-11-12'),
-(6, 20123456, 'Fabián', 'Castro', 'Hernández', '2023-01-30'),
-(7, 20234567, 'Gloria', 'Sánchez', 'Vargas', '2023-02-14'),
-(8, 20345678, 'Hugo', 'Martínez', 'Osorio', '2023-04-10'),
-(9, 20456789, 'Isabel', 'Jiménez', 'Pineda', '2023-05-22'),
-(10, 20567890, 'Jorge', 'Gómez', 'Suárez', '2023-07-01'),
-(11, 30123456, 'Karen', 'Álvarez', 'Ruiz', '2023-08-15'),
-(12, 30234567, 'Luis', 'Moreno', 'Díaz', '2023-10-05'),
-(13, 30345678, 'Mónica', 'Ortiz', 'Morales', '2023-12-10'),
-(14, 30456789, 'Nelson', 'Herrera', 'Giraldo', '2024-01-20'),
-(15, 30567890, 'Paola', 'Valencia', 'Ríos', '2024-02-25');
+INSERT INTO `drivers` (`id_driver`, `num_identification`, `name`, `lastname`, `second_lastname`, `contratation_date`, `status`) VALUES
+(1, 10123456, 'Andrés', 'García', 'López', '2022-01-10', 'AVAILABLE'),
+(2, 10234567, 'Beatriz', 'Mendoza', 'Pérez', '2022-03-15', 'AVAILABLE'),
+(3, 10345678, 'Camilo', 'Torres', 'Rojas', '2022-06-20', 'AVAILABLE'),
+(4, 10456789, 'Diana', 'Ramírez', 'Cano', '2022-08-05', 'AVAILABLE'),
+(5, 10567890, 'Esteban', 'Quintero', 'Mejía', '2022-11-12', 'AVAILABLE'),
+(6, 20123456, 'Fabián', 'Castro', 'Hernández', '2023-01-30', 'AVAILABLE'),
+(7, 20234567, 'Gloria', 'Sánchez', 'Vargas', '2023-02-14', 'AVAILABLE'),
+(8, 20345678, 'Hugo', 'Martínez', 'Osorio', '2023-04-10', 'AVAILABLE'),
+(9, 20456789, 'Isabel', 'Jiménez', 'Pineda', '2023-05-22', 'AVAILABLE'),
+(10, 20567890, 'Jorge', 'Gómez', 'Suárez', '2023-07-01', 'AVAILABLE'),
+(11, 30123456, 'Karen', 'Álvarez', 'Ruiz', '2023-08-15', 'AVAILABLE'),
+(12, 30234567, 'Luis', 'Moreno', 'Díaz', '2023-10-05', 'AVAILABLE'),
+(13, 30345678, 'Mónica', 'Ortiz', 'Morales', '2023-12-10', 'AVAILABLE'),
+(14, 30456789, 'Nelson', 'Herrera', 'Giraldo', '2024-01-20', 'AVAILABLE'),
+(15, 30567890, 'Paola', 'Valencia', 'Ríos', '2024-02-25', 'AVAILABLE');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `driver_licences`
+-- Estructura de tabla para la tabla `driver_licenses`
 --
 
-CREATE TABLE `driver_licences` (
-  `id_licence` int(11) NOT NULL,
+CREATE TABLE `driver_licenses` (
+  `id_license` int(11) NOT NULL,
   `issue_date` date NOT NULL,
   `expiry_date` date NOT NULL,
   `description` varchar(100) DEFAULT NULL,
@@ -73,10 +74,10 @@ CREATE TABLE `driver_licences` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `driver_licences`
+-- Volcado de datos para la tabla `driver_licenses`
 --
 
-INSERT INTO `driver_licences` (`id_licence`, `issue_date`, `expiry_date`, `description`, `id_category`, `id_driver`) VALUES
+INSERT INTO `driver_licenses` (`id_license`, `issue_date`, `expiry_date`, `description`, `id_category`, `id_driver`) VALUES
 (1, '2022-01-10', '2027-01-10', 'Camión sencillo', 5, 1),
 (2, '2022-03-15', '2025-03-15', 'Bus de pasajeros', 6, 2),
 (3, '2022-06-20', '2027-06-20', 'Tractomula pesada', 7, 3),
@@ -218,7 +219,7 @@ CREATE TABLE `routes` (
   `destination` varchar(50) NOT NULL,
   `distance` int(11) NOT NULL,
   `fuel_consumed` int(11) NOT NULL,
-  `travelDate` date NOT NULL,
+  `travel_date` date NOT NULL,
   `id_vehicle` int(11) NOT NULL,
   `id_driver` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -227,7 +228,7 @@ CREATE TABLE `routes` (
 -- Volcado de datos para la tabla `routes`
 --
 
-INSERT INTO `routes` (`id_route`, `origin`, `destination`, `distance`, `fuel_consumed`, `travelDate`, `id_vehicle`, `id_driver`) VALUES
+INSERT INTO `routes` (`id_route`, `origin`, `destination`, `distance`, `fuel_consumed`, `travel_date`, `id_vehicle`, `id_driver`) VALUES
 (1, 'Bogotá', 'Medellín', 420, 45, '2024-03-01', 1, 1),
 (2, 'Medellín', 'Cali', 450, 50, '2024-03-02', 2, 2),
 (3, 'Cali', 'Buenaventura', 120, 15, '2024-03-03', 3, 3),
@@ -345,7 +346,22 @@ INSERT INTO `routes` (`id_route`, `origin`, `destination`, `distance`, `fuel_con
 (115, 'Cúcuta', 'Ocaña', 200, 26, '2024-05-02', 15, 15),
 (116, 'Ocaña', 'Aguachica', 50, 7, '2024-05-04', 15, 15),
 (117, 'Aguachica', 'Valledupar', 170, 21, '2024-05-06', 15, 15),
-(118, 'Valledupar', 'Bosconia', 95, 11, '2024-05-08', 15, 15);
+(118, 'Valledupar', 'Bosconia', 95, 11, '2024-05-08', 15, 15),
+(119, 'Bogotá', 'Santa Marta', 950, 121, '2026-03-01', 1, 1),
+(120, 'Santa Marta', 'Medellín', 830, 105, '2026-03-05', 2, 1),
+(121, 'Medellín', 'Cali', 420, 55, '2026-03-10', 1, 1),
+(122, 'Cali', 'Ipiales', 470, 60, '2026-03-02', 3, 2),
+(123, 'Ipiales', 'Bogotá', 840, 110, '2026-03-08', 4, 2),
+(124, 'Bogotá', 'Barranquilla', 1000, 130, '2026-03-15', 3, 2),
+(125, 'Bucaramanga', 'Cartagena', 650, 85, '2026-03-04', 5, 3),
+(126, 'Cartagena', 'Pereira', 800, 95, '2026-03-12', 5, 3),
+(127, 'Pereira', 'Villavicencio', 350, 45, '2026-03-18', 2, 3),
+(128, 'Villavicencio', 'Montería', 880, 115, '2026-03-22', 1, 3),
+(129, 'Cúcuta', 'Bogotá', 550, 70, '2026-03-06', 4, 4),
+(130, 'Bogotá', 'Neiva', 300, 35, '2026-03-11', 2, 4),
+(131, 'Neiva', 'Pasto', 450, 58, '2026-03-16', 3, 4),
+(132, 'Pasto', 'Cali', 380, 48, '2026-03-20', 5, 4),
+(133, 'Cali', 'Buenaventura', 120, 15, '2026-03-25', 1, 4);
 
 -- --------------------------------------------------------
 
@@ -359,29 +375,32 @@ CREATE TABLE `vehicles` (
   `brand` varchar(50) NOT NULL,
   `model` year(4) NOT NULL,
   `load_capacity` int(11) DEFAULT NULL,
-  `mileage` int(7) NOT NULL
+  `mileage` int(7) NOT NULL,
+  `axles` int(11) DEFAULT NULL,
+  `fuel_type` varchar(50) DEFAULT NULL,
+  `status` enum('AVAILABLE','IN_ROUTE','MAINTENANCE') DEFAULT 'AVAILABLE'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `vehicles`
 --
 
-INSERT INTO `vehicles` (`id_vehicle`, `number_plate`, `brand`, `model`, `load_capacity`, `mileage`) VALUES
-(1, 'KGT101', 'Kenworth', '2022', 5000, 12500),
-(2, 'LMX202', 'Chevrolet', '2018', 12000, 45000),
-(3, 'NBH303', 'Foton', '2021', 2500, 8900),
-(4, 'OJP404', 'Hino', '2020', 8000, 22300),
-(5, 'PWQ505', 'International', '2015', 15000, 67800),
-(6, 'RTY606', 'Jac', '2023', 4500, 15600),
-(7, 'SDF707', 'Kenworth', '2019', 10000, 34200),
-(8, 'XCV808', 'Chevrolet', '2017', 3500, 9100),
-(9, 'VBN909', 'Mercedes-Benz', '2024', 18000, 89000),
-(10, 'QWE111', 'Foton', '2021', 6000, 18700),
-(11, 'ASD222', 'Hino', '2016', 12000, 52100),
-(12, 'ZXC333', 'Chevrolet', '2023', 2000, 4500),
-(13, 'YUI444', 'International', '2018', 7500, 29800),
-(14, 'HJK555', 'Kenworth', '2020', 14000, 71200),
-(15, 'BNM666', 'Jac', '2022', 5500, 13400);
+INSERT INTO `vehicles` (`id_vehicle`, `number_plate`, `brand`, `model`, `load_capacity`, `mileage`, `axles`, `fuel_type`, `status`) VALUES
+(1, 'KGT101', 'Kenworth', '2022', 5000, 12500, 2, 'Diesel', 'AVAILABLE'),
+(2, 'LMX202', 'Chevrolet', '2018', 12000, 45000, 6, 'Diesel', 'AVAILABLE'),
+(3, 'NBH303', 'Foton', '2021', 2500, 8900, 2, 'Regular', 'AVAILABLE'),
+(4, 'OJP404', 'Hino', '2020', 8000, 22300, 3, 'Diesel', 'AVAILABLE'),
+(5, 'PWQ505', 'International', '2015', 15000, 67800, 6, 'Diesel', 'AVAILABLE'),
+(6, 'RTY606', 'Jac', '2023', 4500, 15600, 2, 'Diesel', 'AVAILABLE'),
+(7, 'SDF707', 'Kenworth', '2019', 10000, 34200, 3, 'Diesel', 'AVAILABLE'),
+(8, 'XCV808', 'Chevrolet', '2017', 3500, 9100, 2, 'Regular', 'AVAILABLE'),
+(9, 'VBN909', 'Mercedes-Benz', '2024', 18000, 89000, 6, 'Diesel', 'AVAILABLE'),
+(10, 'QWE111', 'Foton', '2021', 6000, 18700, 2, 'Diesel', 'AVAILABLE'),
+(11, 'ASD222', 'Hino', '2016', 12000, 52100, 6, 'Diesel', 'AVAILABLE'),
+(12, 'ZXC333', 'Chevrolet', '2023', 2000, 4500, 2, 'Regular', 'AVAILABLE'),
+(13, 'YUI444', 'International', '2018', 7500, 29800, 3, 'Diesel', 'AVAILABLE'),
+(14, 'HJK555', 'Kenworth', '2020', 14000, 71200, 6, 'Diesel', 'AVAILABLE'),
+(15, 'BNM666', 'Jac', '2022', 5500, 13400, 2, 'Diesel', 'AVAILABLE');
 
 --
 -- Índices para tablas volcadas
@@ -394,10 +413,10 @@ ALTER TABLE `drivers`
   ADD PRIMARY KEY (`id_driver`);
 
 --
--- Indices de la tabla `driver_licences`
+-- Indices de la tabla `driver_licenses`
 --
-ALTER TABLE `driver_licences`
-  ADD PRIMARY KEY (`id_licence`),
+ALTER TABLE `driver_licenses`
+  ADD PRIMARY KEY (`id_license`),
   ADD KEY `id_category` (`id_category`),
   ADD KEY `id_driver` (`id_driver`);
 
@@ -439,10 +458,10 @@ ALTER TABLE `drivers`
   MODIFY `id_driver` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT de la tabla `driver_licences`
+-- AUTO_INCREMENT de la tabla `driver_licenses`
 --
-ALTER TABLE `driver_licences`
-  MODIFY `id_licence` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+ALTER TABLE `driver_licenses`
+  MODIFY `id_license` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `license_categories`
@@ -460,7 +479,7 @@ ALTER TABLE `maintenances`
 -- AUTO_INCREMENT de la tabla `routes`
 --
 ALTER TABLE `routes`
-  MODIFY `id_route` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+  MODIFY `id_route` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT de la tabla `vehicles`
@@ -473,11 +492,11 @@ ALTER TABLE `vehicles`
 --
 
 --
--- Filtros para la tabla `driver_licences`
+-- Filtros para la tabla `driver_licenses`
 --
-ALTER TABLE `driver_licences`
-  ADD CONSTRAINT `driver_licences_ibfk_1` FOREIGN KEY (`id_category`) REFERENCES `license_categories` (`id_category`),
-  ADD CONSTRAINT `driver_licences_ibfk_2` FOREIGN KEY (`id_driver`) REFERENCES `drivers` (`id_driver`);
+ALTER TABLE `driver_licenses`
+  ADD CONSTRAINT `driver_licenses_ibfk_1` FOREIGN KEY (`id_category`) REFERENCES `license_categories` (`id_category`),
+  ADD CONSTRAINT `driver_licenses_ibfk_2` FOREIGN KEY (`id_driver`) REFERENCES `drivers` (`id_driver`);
 
 --
 -- Filtros para la tabla `maintenances`
