@@ -149,6 +149,41 @@ public class DriverDAO {
         return DriversReportList;
     }
 
+    public DriverFatigueDTO getReportDriverFatigue (int id_driver) {
+        DriverFatigueDTO driver = null;
+
+        /*sql driver fatigue*/
+        String sql = "SELECT d.id_driver, d.name, d.lastname, SUM(r.distance) AS total_mileage " +
+                "FROM drivers d " +
+                "INNER JOIN routes r ON d.id_driver = r.id_driver " +
+                "WHERE d.id_driver = ? " +
+                "GROUP BY d.id_driver, d.name, d.lastname " +
+                "HAVING total_mileage > 2000";
+
+        try (Connection conn = Connection_db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id_driver);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    driver = new DriverFatigueDTO(
+                            rs.getInt("id_driver"),
+                            rs.getString("name"),
+                            rs.getString("lastname"),
+                            rs.getDouble("total_mileage")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return driver;
+    }
+
+
     public List<Driver> GetDriversNotActiveMonth () {
         List<Driver> driverList = new ArrayList<>();
 
