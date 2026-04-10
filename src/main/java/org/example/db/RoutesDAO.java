@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoutesDAO {
-    public List<Route> getAllRoutes () {
+    public static List<Route> getAllRoutes () {
         List<Route> routesList = new ArrayList<>();
 
         String sql = "SELECT * FROM routes r " +
@@ -76,7 +76,7 @@ public class RoutesDAO {
         return routesList;
     }
 
-    public List<EfficiencyReportDTO> getEfficiencyReport () {
+    public static List<EfficiencyReportDTO> getEfficiencyReport () {
         List<EfficiencyReportDTO> reportDTOList = new ArrayList<>();
         String sql = "SELECT d.name, " +
                 "v.brand, " +
@@ -109,7 +109,7 @@ public class RoutesDAO {
         return reportDTOList;
     }
 
-    public void saveRoute(Route route) {
+    public static void saveRoute(Route route) {
         String sql = "  INSERT INTO route (origin, destination, distance, fuel_consumed, travel_date, id_vehicle, id_driver) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
