@@ -28,7 +28,9 @@ public class RoutesDAO {
                         rs.getString("name"),
                         rs.getString("lastname"),
                         rs.getString("second_lastname"),
-                        rs.getDate("contratation_date").toLocalDate()
+                        rs.getDate("contratation_date").toLocalDate(),
+                        DriverStatus.valueOf(rs.getString("status"))
+
                 );
 
                 Vehicle vehicle = null;
@@ -41,7 +43,9 @@ public class RoutesDAO {
                             rs.getInt("load_capacity"),
                             rs.getInt("mileage"),
                             rs.getInt("axles"),
-                            rs.getString("fuel_type")
+                            rs.getString("fuel_type"),
+                            VehicleStatus.valueOf(rs.getString("status"))
+
 
                     );
                 } else {
@@ -53,7 +57,9 @@ public class RoutesDAO {
                             rs.getInt("load_capacity"),
                             rs.getInt("mileage"),
                             rs.getInt("axles"),
-                            rs.getString("fuel_type")
+                            rs.getString("fuel_type"),
+                            VehicleStatus.valueOf(rs.getString("status"))
+
                     );
                 }
 
