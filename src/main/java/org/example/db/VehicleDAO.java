@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class VehicleDAO {
-    public List<Vehicle> getAllVehiclesWithMaintenances () {
+    public static List<Vehicle> getAllVehiclesWithMaintenances () {
         Map<Integer, Vehicle> vehicleMap = new HashMap<>();
 
         String sql = "SELECT * FROM Vehicles v " +
@@ -79,7 +79,7 @@ public class VehicleDAO {
         return new ArrayList<>(vehicleMap.values());
     }
 
-    public Vehicle getVehicleById (int id_vehicle) {
+    public static Vehicle getVehicleById (int id_vehicle) {
         Vehicle v = null;
 
         String sql = "SELECT * FROM vehicles v " +
@@ -144,7 +144,7 @@ public class VehicleDAO {
         return v;
     }
 
-    public List<VehiclesRiskDTO> getVehiclesWithRisk () {
+    public static List<VehiclesRiskDTO> getVehiclesWithRisk () {
         List<VehiclesRiskDTO> vehiclesRiskDTOList = null;
 
         String sql = "SELECT d.id_driver, d.name, d.lastname, SUM(r.distance) AS total_mileage " +
@@ -175,7 +175,7 @@ public class VehicleDAO {
         return vehiclesRiskDTOList;
     }
 
-    public List<MostWastefulBrandsDTO> getRankingMostWastefulBrands () {
+    public static List<MostWastefulBrandsDTO> getRankingMostWastefulBrands () {
         List<MostWastefulBrandsDTO> MostWastefulBrandsList = new ArrayList<>();
 
         /*RANKING DE MARCAS MAS GASTONAS*/
@@ -202,7 +202,7 @@ public class VehicleDAO {
         return MostWastefulBrandsList;
     }
 
-    public VehicleVersatilityDTO getMostVersatileVehicle() {
+    public static VehicleVersatilityDTO getMostVersatileVehicle() {
         VehicleVersatilityDTO mostVersatile = null;
 
         String sql = "SELECT v.id_vehicle, v.brand, v.model, COUNT(DISTINCT r.destination) AS visited_places " +
@@ -231,7 +231,7 @@ public class VehicleDAO {
         return mostVersatile;
     }
 
-    public List<VehicleOperatingCostDTO> getReportOperatingCosts() {
+    public static List<VehicleOperatingCostDTO> getReportOperatingCosts() {
         List<VehicleOperatingCostDTO> report = new ArrayList<>();
 
         String sql = "SELECT v.id_vehicle, v.brand, v.number_plate, " +
@@ -270,7 +270,7 @@ public class VehicleDAO {
         return report;
     }
 
-    public VehicleStatus checkDisponibility (int id_vehicle) {
+    public static VehicleStatus checkDisponibility(int id_vehicle) {
         VehicleStatus status = null;
 
         String sql = "SELECT v.status " +
