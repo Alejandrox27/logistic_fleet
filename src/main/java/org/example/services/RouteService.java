@@ -3,25 +3,27 @@ package org.example.services;
 import org.example.Exceptions.DriverExceptions.DriverException;
 import org.example.Exceptions.DriverExceptions.DriverFatigueException;
 import org.example.Exceptions.DriverExceptions.DriverNotAvailableException;
+import org.example.Exceptions.RouteException.RouteException;
+import org.example.Exceptions.RouteException.SameOriginAndDestinationException;
 import org.example.Exceptions.VehicleExceptions.VehicleException;
 import org.example.Exceptions.VehicleExceptions.VehicleNotAvailableException;
 import org.example.db.DriverDAO;
 import org.example.db.RoutesDAO;
 import org.example.db.VehicleDAO;
-import org.example.models.Driver;
 import org.example.models.DriverStatus;
 import org.example.models.Route;
 import org.example.models.VehicleStatus;
 import org.example.models.dto.DriverFatigueDTO;
 
 public class RouteService {
-    public void createRoute(Route route) throws VehicleException, DriverException {
+    public void createRoute(Route route) throws VehicleException, DriverException, RouteException {
         VehicleStatus currentStatusVehicle = VehicleDAO.checkDisponibility(route.getVehicle().getIdVehicle());
         DriverFatigueDTO tiredDriver = DriverDAO.getReportDriverFatigue(route.getDriver().getIdDriver());
         DriverStatus currentStatusDriver = DriverDAO.checkDisponibility(route.getDriver().getIdDriver());
 
+        // Check if the destination is not the same as the origin
         if (route.getOrigin().equalsIgnoreCase(route.getDestination())) {
-
+            throw new SameOriginAndDestinationException(route.getOrigin());
         }
 
         // check if the vehicle exists
@@ -50,5 +52,6 @@ public class RouteService {
         }
 
         RoutesDAO.saveRoute(route);
+        VehicleDAO.updateStatus(route.getVehicle().getIdVehicle(), VehicleStatus.IN_ROUTE);
     }
 }

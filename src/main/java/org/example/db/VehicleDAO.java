@@ -38,7 +38,8 @@ public class VehicleDAO {
                                 rs.getInt("load_capacity"),
                                 rs.getInt("mileage"),
                                 rs.getInt("axles"),
-                                rs.getString("fuel_type")
+                                rs.getString("fuel_type"),
+                                VehicleStatus.valueOf(rs.getString("status"))
 
                         );
                         vehicleMap.put(idV, v);
@@ -51,7 +52,9 @@ public class VehicleDAO {
                                 rs.getInt("load_capacity"),
                                 rs.getInt("mileage"),
                                 rs.getInt("axles"),
-                                rs.getString("fuel_type")
+                                rs.getString("fuel_type"),
+                                VehicleStatus.valueOf(rs.getString("status"))
+
                         );
                         vehicleMap.put(idV, v);
                     }
@@ -105,7 +108,9 @@ public class VehicleDAO {
                                     rs.getInt("load_capacity"),
                                     rs.getInt("mileage"),
                                     rs.getInt("axles"),
-                                    rs.getString("fuel_type")
+                                    rs.getString("fuel_type"),
+                                    VehicleStatus.valueOf(rs.getString("status"))
+
 
                             );
                         } else {
@@ -117,7 +122,9 @@ public class VehicleDAO {
                                     rs.getInt("load_capacity"),
                                     rs.getInt("mileage"),
                                     rs.getInt("axles"),
-                                    rs.getString("fuel_type")
+                                    rs.getString("fuel_type"),
+                                    VehicleStatus.valueOf(rs.getString("status"))
+
                             );
                         }
                     }
@@ -296,5 +303,29 @@ public class VehicleDAO {
         }
 
         return status;
+    }
+
+    public static void updateStatus(int id_vehicle, VehicleStatus status) {
+        // Corregimos id_driver por id_vehicle para que apunte a la tabla correcta
+        String sql = "UPDATE vehicles SET status = ? WHERE id_vehicle = ?";
+
+        try (Connection conn = Connection_db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // .name() convierte el Enum (AVAILABLE, IN_ROUTE, etc.) a String
+            pstmt.setString(1, status.name());
+            pstmt.setInt(2, id_vehicle);
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("✅ Status updated to " + status + " for vehicle ID: " + id_vehicle);
+            } else {
+                System.out.println("⚠️ No vehicle found with ID: " + id_vehicle);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("❌ Error updating vehicle status: " + e.getMessage());
+        }
     }
 }
