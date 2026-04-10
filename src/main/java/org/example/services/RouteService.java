@@ -26,6 +26,11 @@ public class RouteService {
             throw new SameOriginAndDestinationException(route.getOrigin());
         }
 
+        // check if the driver exists
+        if (currentStatusDriver == null) {
+            throw new DriverException("The Driver doesn't exists");
+        }
+
         // check if the vehicle exists
         if (currentStatusVehicle == null) {
             throw new VehicleException("The vehicle doesn't exist.");
@@ -39,11 +44,6 @@ public class RouteService {
         // check Fatigue (>2000km)
         if (tiredDriver != null) {
             throw new DriverFatigueException(tiredDriver);
-        }
-
-        // check if the driver exists
-        if (currentStatusDriver == null) {
-            throw new DriverException("The Driver doesn't exists");
         }
 
         //check if the driver is available for a new route

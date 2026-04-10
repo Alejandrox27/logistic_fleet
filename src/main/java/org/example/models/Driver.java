@@ -1,6 +1,7 @@
 package org.example.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Driver {
@@ -22,6 +23,7 @@ public class Driver {
         this.secondLastName = secondLastName;
         this.contratationDate = contratationDate;
         this.status = status;
+        this.licenses = new ArrayList<>();
     }
 
     // --- GETTERS ---

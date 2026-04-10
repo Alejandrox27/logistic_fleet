@@ -40,7 +40,7 @@ public abstract class Vehicle {
     }
 
     public double getTotalMaintenanceCost() {
-        int totalMaintenanceCost = 0;
+        double totalMaintenanceCost = 0;
         for (Maintenance m: maintenanceHistory) {
             totalMaintenanceCost += m.getCost();
         }
