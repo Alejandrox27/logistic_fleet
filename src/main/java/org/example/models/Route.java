@@ -6,15 +6,15 @@ public class Route {
     private int id_route;
     private String origin;
     private String destination;
-    private int distance;
-    private int fuel_consumed;
+    private double distance;
+    private double fuel_consumed;
     private LocalDate travelDate;
     private Vehicle vehicle;
     private Driver driver;
 
     // --- CONSTRUCTOR ---
-    public Route(int id_route, String origin, String destination, int distance,
-                 int fuel_consumed, LocalDate travelDate, Vehicle vehicle, Driver driver) {
+    public Route(int id_route, String origin, String destination, double distance,
+                 double fuel_consumed, LocalDate travelDate, Vehicle vehicle, Driver driver) {
         this.id_route = id_route;
         this.origin = origin;
         this.destination = destination;
@@ -39,11 +39,11 @@ public class Route {
         return destination;
     }
 
-    public int getDistance() {
+    public double getDistance() {
         return distance;
     }
 
-    public int getFuelConsumed() {
+    public double getFuelConsumed() {
         return fuel_consumed;
     }
 
@@ -69,11 +69,11 @@ public class Route {
         this.destination = destination;
     }
 
-    public void setDistance(int distance) {
+    public void setDistance(double distance) {
         this.distance = distance;
     }
 
-    public void setFuel_consumed(int fuel_consumed) {
+    public void setFuel_consumed(double fuel_consumed) {
         this.fuel_consumed = fuel_consumed;
     }
 

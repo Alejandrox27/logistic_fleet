@@ -67,8 +67,8 @@ public class RoutesDAO {
                         rs.getInt("id_route"),
                         rs.getString("origin"),
                         rs.getString("destination"),
-                        rs.getInt("distance"),
-                        rs.getInt("fuel_consumed"),
+                        rs.getDouble("distance"),
+                        rs.getDouble("fuel_consumed"),
                         rs.getDate("travel_date").toLocalDate(),
                         vehicle,
                         driver
@@ -92,7 +92,7 @@ public class RoutesDAO {
                 "FROM routes r " +
                 "INNER JOIN vehicles v ON r.id_vehicle = v.id_vehicle " +
                 "INNER JOIN drivers d ON r.id_driver = d.id_driver " +
-                "GROUP BY d.id_driver, v.id_vehicle " +
+                "GROUP BY d.id_driver, d.name, v.brand, v.model " +
                 "HAVING total_routes > 5";
 
         try (Connection conn = Connection_db.getConnection();
@@ -116,7 +116,7 @@ public class RoutesDAO {
     }
 
     public static void saveRoute(Route route) {
-        String sql = "  INSERT INTO route (origin, destination, distance, fuel_consumed, travel_date, id_vehicle, id_driver) " +
+        String sql = "  INSERT INTO routes (origin, destination, distance, fuel_consumed, travel_date, id_vehicle, id_driver) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = Connection_db.getConnection();
