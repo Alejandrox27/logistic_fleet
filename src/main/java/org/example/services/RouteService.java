@@ -2,6 +2,7 @@ package org.example.services;
 
 import org.example.Exceptions.DriverExceptions.DriverException;
 import org.example.Exceptions.DriverExceptions.DriverFatigueException;
+import org.example.Exceptions.DriverExceptions.DriverNotAvailableException;
 import org.example.Exceptions.VehicleExceptions.VehicleException;
 import org.example.Exceptions.VehicleExceptions.VehicleNotAvailableException;
 import org.example.db.DriverDAO;
@@ -14,31 +15,40 @@ import org.example.models.VehicleStatus;
 import org.example.models.dto.DriverFatigueDTO;
 
 public class RouteService {
-    public String createRoute(Route route) throws VehicleException, DriverException {
+    public void createRoute(Route route) throws VehicleException, DriverException {
         VehicleStatus currentStatusVehicle = VehicleDAO.checkDisponibility(route.getVehicle().getIdVehicle());
-        DriverFatigueDTO driver = DriverDAO.getReportDriverFatigue(route.getDriver().getIdDriver());
+        DriverFatigueDTO tiredDriver = DriverDAO.getReportDriverFatigue(route.getDriver().getIdDriver());
         DriverStatus currentStatusDriver = DriverDAO.checkDisponibility(route.getDriver().getIdDriver());
 
+        if (route.getOrigin().equalsIgnoreCase(route.getDestination())) {
+
+        }
+
+        // check if the vehicle exists
         if (currentStatusVehicle == null) {
             throw new VehicleException("The vehicle doesn't exist.");
         }
 
+        //check vehicle disponibility
         if (currentStatusVehicle != VehicleStatus.AVAILABLE) {
             throw new VehicleNotAvailableException(currentStatusVehicle);
         }
 
-        if (driver != null) {
-            throw new DriverFatigueException(driver);
+        // check Fatigue (>2000km)
+        if (tiredDriver != null) {
+            throw new DriverFatigueException(tiredDriver);
         }
 
+        // check if the driver exists
         if (currentStatusDriver == null) {
             throw new DriverException("The Driver doesn't exists");
         }
 
-
-
+        //check if the driver is available for a new route
+        if (currentStatusDriver != DriverStatus.AVAILABLE) {
+            throw new DriverNotAvailableException(currentStatusDriver);
+        }
 
         RoutesDAO.saveRoute(route);
-        return "Route created successfully!";
     }
 }
