@@ -2,6 +2,8 @@ package org.example.db;
 
 import org.example.models.Driver;
 import org.example.models.DriverLicense;
+import org.example.models.DriverStatus;
+import org.example.models.VehicleStatus;
 import org.example.models.dto.DriverFatigueDTO;
 
 import java.sql.*;
@@ -263,5 +265,32 @@ public class DriverDAO {
 
         return driverList;
     }
+
+    public static DriverStatus checkDisponibility (int id_driver) {
+        DriverStatus status = null;
+
+        String sql = "SELECT d.status " +
+                "FROM drivers d " +
+                "WHERE d.id_driver = ?";
+
+        try (Connection conn = Connection_db.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id_driver);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                String statusStr = rs.getString("status");
+
+                if (statusStr != null) {
+                    status = DriverStatus.valueOf(statusStr);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return status;
+    }
+
 
 }
