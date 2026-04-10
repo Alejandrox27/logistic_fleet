@@ -53,5 +53,6 @@ public class RouteService {
 
         RoutesDAO.saveRoute(route);
         VehicleDAO.updateStatus(route.getVehicle().getIdVehicle(), VehicleStatus.IN_ROUTE);
+        DriverDAO.updateStatus(route.getDriver().getIdDriver(), DriverStatus.IN_ROUTE);
     }
 }

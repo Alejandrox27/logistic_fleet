@@ -152,14 +152,15 @@ public class VehicleDAO {
     }
 
     public static List<VehiclesRiskDTO> getVehiclesWithRisk () {
-        List<VehiclesRiskDTO> vehiclesRiskDTOList = null;
+        List<VehiclesRiskDTO> vehiclesRiskDTOList = new ArrayList<>();
 
-        String sql = "SELECT d.id_driver, d.name, d.lastname, SUM(r.distance) AS total_mileage " +
-                "FROM drivers d " +
-                "INNER JOIN routes r ON d.id_driver = r.id_driver " +
-                "GROUP BY d.id_driver " +
-                "HAVING total_mileage > 2000 " +
-                "ORDER BY total_mileage DESC";
+        String sql = "SELECT v.id_vehicle, v.number_plate, v.brand, " +
+                "SUM(m.cost) AS total_spent, " +
+                "(v.load_capacity * 0.5) AS risk_threshold " +
+                "FROM vehicles v " +
+                "INNER JOIN maintenances m ON v.id_vehicle = m.id_vehicle " +
+                "GROUP BY v.id_vehicle " +
+                "HAVING total_spent > risk_threshold";
 
         try (Connection conn = Connection_db.getConnection();
             Statement stmt = conn.createStatement();
@@ -312,7 +313,6 @@ public class VehicleDAO {
         try (Connection conn = Connection_db.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            // .name() convierte el Enum (AVAILABLE, IN_ROUTE, etc.) a String
             pstmt.setString(1, status.name());
             pstmt.setInt(2, id_vehicle);
 

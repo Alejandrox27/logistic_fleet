@@ -41,7 +41,8 @@ public class DriverDAO {
                              rs.getString("name"),
                              rs.getString("lastname"),
                              rs.getString("second_lastname"),
-                             rs.getDate("contratation_date").toLocalDate()
+                             rs.getDate("contratation_date").toLocalDate(),
+                             DriverStatus.valueOf(rs.getString("status"))
                      );
 
                      driverMap.put(idDriver, d);
@@ -91,7 +92,9 @@ public class DriverDAO {
                                 rs.getString("name"),
                                 rs.getString("lastname"),
                                 rs.getString("second_lastname"),
-                                rs.getDate("contratation_date").toLocalDate()
+                                rs.getDate("contratation_date").toLocalDate(),
+                                DriverStatus.valueOf(rs.getString("status"))
+
                         );
                     }
                     int idLicense = rs.getInt("id_license");
@@ -213,7 +216,9 @@ public class DriverDAO {
                             rs.getString("name"),
                             rs.getString("lastname"),
                             rs.getString("second_lastname"),
-                            rs.getDate("contratation_date").toLocalDate()
+                            rs.getDate("contratation_date").toLocalDate(),
+                            DriverStatus.valueOf(rs.getString("status"))
+
                     ));
                 }
             }
@@ -254,7 +259,9 @@ public class DriverDAO {
                             rs.getString("name"),
                             rs.getString("lastname"),
                             rs.getString("second_lastname"),
-                            rs.getDate("contratation_date").toLocalDate()
+                            rs.getDate("contratation_date").toLocalDate(),
+                            DriverStatus.valueOf(rs.getString("status"))
+
                     ));
                 }
             }
@@ -279,10 +286,11 @@ public class DriverDAO {
             pstmt.setInt(1, id_driver);
 
             try (ResultSet rs = pstmt.executeQuery()) {
-                String statusStr = rs.getString("status");
-
-                if (statusStr != null) {
-                    status = DriverStatus.valueOf(statusStr);
+                if (rs.next()) {
+                    String statusStr = rs.getString("status");
+                    if (statusStr != null) {
+                        status = DriverStatus.valueOf(statusStr);
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -290,5 +298,29 @@ public class DriverDAO {
         }
 
         return status;
+    }
+
+    public static void updateStatus(int id_driver, DriverStatus status) {
+        String sql = "UPDATE drivers " +
+                "SET status = ? " +
+                "WHERE id_driver = ?";
+
+        try (Connection conn = Connection_db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, status.name());
+            pstmt.setInt(2, id_driver);
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("✅ Driver status updated to: " + status);
+            } else {
+                System.out.println("⚠️ No driver found with ID: " + id_driver);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("❌ Error updating driver status: " + e.getMessage());
+        }
     }
 }

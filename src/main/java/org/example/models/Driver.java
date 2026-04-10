@@ -10,16 +10,18 @@ public class Driver {
     private String lastName;
     private String secondLastName;
     private LocalDate contratationDate;
+    private DriverStatus status;
     private List<DriverLicense> licenses;
 
     public Driver(int id_driver, int num_identification, String name, String lastName,
-                  String secondLastName, LocalDate contratationDate) {
+                  String secondLastName, LocalDate contratationDate, DriverStatus status) {
         this.id_driver = id_driver;
         this.num_identification = num_identification;
         this.name = name;
         this.lastName = lastName;
         this.secondLastName = secondLastName;
         this.contratationDate = contratationDate;
+        this.status = status;
     }
 
     // --- GETTERS ---
@@ -52,6 +54,8 @@ public class Driver {
         return licenses;
     }
 
+    public DriverStatus getStatus() { return status; }
+
     // --- SETTERS ---
 
     public void setName(String name) {
@@ -69,4 +73,6 @@ public class Driver {
     public void addLicense(DriverLicense license) {
         this.licenses.add(license);
     }
+
+    public void setStatus(DriverStatus status) { this.status = status; }
 }
