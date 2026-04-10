@@ -43,7 +43,7 @@ public class Route {
         return distance;
     }
 
-    public int getFuel_consumed() {
+    public int getFuelConsumed() {
         return fuel_consumed;
     }
 

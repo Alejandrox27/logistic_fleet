@@ -108,5 +108,25 @@ public class RoutesDAO {
 
         return reportDTOList;
     }
-    
+
+    public void saveRoute(Route route) {
+        String sql = "  INSERT INTO route (origin, destination, distance, fuel_consumed, travel_date, id_vehicle, id_driver) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = Connection_db.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, route.getOrigin());
+            pstmt.setString(2, route.getDestination());
+            pstmt.setDouble(3, route.getDistance());
+            pstmt.setDouble(4, route.getFuelConsumed());
+            pstmt.setDate(5, java.sql.Date.valueOf(route.getTravelDate()));
+            pstmt.setInt(6, route.getVehicle().getIdVehicle());
+            pstmt.setInt(7, route.getDriver().getIdDriver());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

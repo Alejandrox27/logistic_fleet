@@ -46,7 +46,7 @@ public abstract class Vehicle {
     }
     //--- GETTERS ---
 
-    public int getId_vehicle() {
+    public int getIdVehicle() {
         return id_vehicle;
     }
 
