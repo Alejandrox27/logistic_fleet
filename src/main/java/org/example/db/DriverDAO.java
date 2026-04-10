@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DriverDAO {
-    public List<Driver> getAllDriversWithLicense () {
+    public static List<Driver> getAllDriversWithLicense () {
         Map<Integer, Driver> driverMap = new HashMap<>();
 
         String sql = "SELECT * FROM drivers d " +
@@ -68,7 +68,7 @@ public class DriverDAO {
         return new ArrayList<>(driverMap.values());
     }
 
-    public Driver getDriverById(int id_driver) {
+    public static Driver getDriverById(int id_driver) {
         Driver driver = null;
 
         String sql = "SELECT * FROM drivers d " +
@@ -118,7 +118,7 @@ public class DriverDAO {
         return driver;
     }
 
-    public List<DriverFatigueDTO> getReportDriverFatigue () {
+    public static List<DriverFatigueDTO> getReportDriverFatigue () {
         List<DriverFatigueDTO> DriversReportList = new ArrayList<>();
 
         /*sql driver fatigue*/
@@ -149,7 +149,7 @@ public class DriverDAO {
         return DriversReportList;
     }
 
-    public DriverFatigueDTO getReportDriverFatigue (int id_driver) {
+    public static DriverFatigueDTO getReportDriverFatigue (int id_driver) {
         DriverFatigueDTO driver = null;
 
         /*sql driver fatigue*/
@@ -183,8 +183,7 @@ public class DriverDAO {
         return driver;
     }
 
-
-    public List<Driver> GetDriversNotActiveMonth () {
+    public static List<Driver> GetDriversNotActiveMonth () {
         List<Driver> driverList = new ArrayList<>();
 
         String sql = "SELECT *\n" +
@@ -224,7 +223,7 @@ public class DriverDAO {
         return driverList;
     }
 
-    public List<Driver> GetDriversNotActiveMonth (int month, int year) {
+    public static List<Driver> GetDriversNotActiveMonth (int month, int year) {
         List<Driver> driverList = new ArrayList<>();
 
         String sql = "SELECT *\n" +
