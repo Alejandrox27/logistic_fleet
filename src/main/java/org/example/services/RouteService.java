@@ -4,6 +4,6 @@ import org.example.models.Route;
 
 public class RouteService {
     public void createRoute(Route route) {
-        
+        //checkStatus Vehicle
     }
 }

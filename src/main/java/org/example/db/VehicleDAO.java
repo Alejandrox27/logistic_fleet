@@ -1,9 +1,6 @@
 package org.example.db;
 
-import org.example.models.DeliveryVan;
-import org.example.models.HeavyTruck;
-import org.example.models.Maintenance;
-import org.example.models.Vehicle;
+import org.example.models.*;
 import org.example.models.dto.MostWastefulBrandsDTO;
 import org.example.models.dto.VehicleOperatingCostDTO;
 import org.example.models.dto.VehicleVersatilityDTO;
@@ -271,5 +268,33 @@ public class VehicleDAO {
         }
 
         return report;
+    }
+
+    public VehicleStatus checkDisponibility (int id_vehicle) {
+        VehicleStatus status = null;
+
+        String sql = "SELECT v.status " +
+                "FROM vehicles v " +
+                "WHERE v.id_vehicle = ?";
+
+        try (Connection conn = Connection_db.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id_vehicle);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String statusStr = rs.getString("status");
+
+                    if (statusStr != null) {
+                        status = VehicleStatus.valueOf(statusStr);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return status;
     }
 }
