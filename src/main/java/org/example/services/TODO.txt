@@ -8,20 +8,7 @@ IDriverService
 
     List<Driver> getIdleDriversForMonth(int month): Ejecuta tu SQL de Conductores sin actividad.
 
-IRouteService
-    void createRoute(Route route): Antes de llamar a RouteDAO.save(), el Service verifica:
-
-    Que el camión no esté en mantenimiento.
-
-    Que el conductor no tenga Fatiga (tu SQL de fatiga).
-
-    Que el destino no sea el mismo que el origen.
-
-    NOTA: SE CAMBIA EL VALOR DE DISPONIBILIDAD DEL VEHICULO Y DEL CONDUCTOR A IN_ROUTE,
-    Y SI SE QUIERE CREAR UNA NUEVA RUTA CON ESE AUTO NO DISPONIBLE DA ERROR (PERSONALIZADO)
-    QUE NO SE PUEDE USAR EL AUTO (O EL CONDUCTOR)
-
-EN RUTAS AGREGAR AGREGAR RUTA, EN CONDUCTOR AGREGAR NUEVO CONDUCTOR (Con sus licencias), EN VEHICULO LO MISMO
+EN CONDUCTOR AGREGAR NUEVO CONDUCTOR (Con sus licencias), EN VEHICULO LO MISMO
 
 HACER VALIDACIONES EN SERVICE ANTES DE CREAR ALGO O TRAER ALGO:
 

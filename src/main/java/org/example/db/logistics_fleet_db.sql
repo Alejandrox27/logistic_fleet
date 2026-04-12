@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-04-2026 a las 05:35:10
+-- Tiempo de generación: 13-04-2026 a las 01:21:31
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -217,8 +217,8 @@ CREATE TABLE `routes` (
   `id_route` int(11) NOT NULL,
   `origin` varchar(50) NOT NULL,
   `destination` varchar(50) NOT NULL,
-  `distance` int(11) NOT NULL,
-  `fuel_consumed` int(11) NOT NULL,
+  `distance` double NOT NULL,
+  `fuel_consumed` double NOT NULL,
   `travel_date` date NOT NULL,
   `id_vehicle` int(11) NOT NULL,
   `id_driver` int(11) NOT NULL

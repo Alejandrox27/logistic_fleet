@@ -3,6 +3,7 @@ package org.example.services;
 import org.example.Exceptions.DriverExceptions.DriverException;
 import org.example.Exceptions.DriverExceptions.DriverFatigueException;
 import org.example.Exceptions.DriverExceptions.DriverNotAvailableException;
+import org.example.Exceptions.DriverExceptions.ExpiredLicenseException;
 import org.example.Exceptions.RouteException.RouteException;
 import org.example.Exceptions.RouteException.SameOriginAndDestinationException;
 import org.example.Exceptions.VehicleExceptions.VehicleException;
@@ -10,17 +11,19 @@ import org.example.Exceptions.VehicleExceptions.VehicleNotAvailableException;
 import org.example.db.DriverDAO;
 import org.example.db.RoutesDAO;
 import org.example.db.VehicleDAO;
-import org.example.models.DriverStatus;
-import org.example.models.Route;
-import org.example.models.VehicleStatus;
+import org.example.models.*;
 import org.example.models.dto.DriverFatigueDTO;
+import java.time.LocalDate;
+
+import java.util.List;
 
 public class RouteService implements IRouteService {
     @Override
-    public void createRoute(Route route) throws VehicleException, DriverException, RouteException {
+    public void createRoute(Route route) throws VehicleException, DriverException, RouteException, ExpiredLicenseException {
         VehicleStatus currentStatusVehicle = VehicleDAO.checkDisponibility(route.getVehicle().getIdVehicle());
         DriverFatigueDTO tiredDriver = DriverDAO.getReportDriverFatigue(route.getDriver().getIdDriver());
         DriverStatus currentStatusDriver = DriverDAO.checkDisponibility(route.getDriver().getIdDriver());
+        List<DriverLicense> driverLicenses = route.getDriver().getLicenses();
 
         // Check if the destination is not the same as the origin
         if (route.getOrigin().equalsIgnoreCase(route.getDestination())) {
@@ -40,6 +43,20 @@ public class RouteService implements IRouteService {
         //check vehicle disponibility
         if (currentStatusVehicle != VehicleStatus.AVAILABLE) {
             throw new VehicleNotAvailableException(currentStatusVehicle);
+        }
+
+        // check if the licenses aren't null or empty
+        if (driverLicenses == null || driverLicenses.isEmpty()) {
+            throw new DriverException("The driver does not have any registered licenses.");
+        }
+
+        // Check driver license expiry date
+        for (DriverLicense license : driverLicenses) {
+            if (license.getCategory().equalsIgnoreCase("C2") || license.getCategory().equalsIgnoreCase("C3")) {
+                if (license.isExpired()) {
+                    throw new ExpiredLicenseException(license);
+                }
+            }
         }
 
         // check Fatigue (>2000km)
