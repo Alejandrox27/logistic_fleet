@@ -15,7 +15,8 @@ import org.example.models.Route;
 import org.example.models.VehicleStatus;
 import org.example.models.dto.DriverFatigueDTO;
 
-public class RouteService {
+public class RouteService implements IRouteService {
+    @Override
     public void createRoute(Route route) throws VehicleException, DriverException, RouteException {
         VehicleStatus currentStatusVehicle = VehicleDAO.checkDisponibility(route.getVehicle().getIdVehicle());
         DriverFatigueDTO tiredDriver = DriverDAO.getReportDriverFatigue(route.getDriver().getIdDriver());
