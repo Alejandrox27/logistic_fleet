@@ -55,6 +55,8 @@ public class RouteService implements IRouteService {
                 if (license.isExpired()) {
                     throw new ExpiredLicenseException(license);
                 }
+            } else {
+                throw new DriverException("The driver can't drive the vehicles because the license is not C2 or C3");
             }
         }
 
