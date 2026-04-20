@@ -328,4 +328,28 @@ public class VehicleDAO {
             System.err.println("❌ Error updating vehicle status: " + e.getMessage());
         }
     }
+
+    public static void saveVehicle(Vehicle vehicle) {
+        String sql = "INSERT INTO vehicles (number_plate, brand, model, load_capacity, mileage, axles, fuel_type, status) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = Connection_db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, vehicle.getNumber_plate());
+            pstmt.setString(2, vehicle.getBrand());
+            pstmt.setInt(3, vehicle.getModel());
+            pstmt.setInt(4, vehicle.getLoad_capacity());
+            pstmt.setInt(5, vehicle.getMileage());
+            pstmt.setInt(6, vehicle.getAxles());
+            pstmt.setString(7, vehicle.getFuelType());
+            pstmt.setString(8, vehicle.getStatus().name());
+
+            pstmt.executeUpdate();
+            System.out.println("Vehicle saved successfully in the database.");
+
+        } catch (SQLException e) {
+            System.err.println("Error saving vehicle: " + e.getMessage());
+        }
+    }
 }
