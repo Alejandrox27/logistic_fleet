@@ -36,7 +36,6 @@ public class DriverDAO {
 
                 if (d == null) {
                      d = new Driver(
-                             idDriver,
                              rs.getInt("num_identification"),
                              rs.getString("name"),
                              rs.getString("lastname"),
@@ -44,6 +43,7 @@ public class DriverDAO {
                              rs.getDate("contratation_date").toLocalDate(),
                              DriverStatus.valueOf(rs.getString("status"))
                      );
+                     d.setId_driver(idDriver);
 
                      driverMap.put(idDriver, d);
                 }
@@ -87,7 +87,6 @@ public class DriverDAO {
                 while (rs.next()) {
                     if (driver == null) {
                         driver = new Driver(
-                                rs.getInt("id_driver"),
                                 rs.getInt("num_identification"),
                                 rs.getString("name"),
                                 rs.getString("lastname"),
@@ -96,6 +95,7 @@ public class DriverDAO {
                                 DriverStatus.valueOf(rs.getString("status"))
 
                         );
+                        driver.setId_driver(rs.getInt("id_driver"));
                     }
                     int idLicense = rs.getInt("id_license");
 
@@ -140,7 +140,6 @@ public class DriverDAO {
                 while (rs.next()) {
                     if (driver == null) {
                         driver = new Driver(
-                                rs.getInt("id_driver"),
                                 rs.getInt("num_identification"),
                                 rs.getString("name"),
                                 rs.getString("lastname"),
@@ -149,6 +148,8 @@ public class DriverDAO {
                                 DriverStatus.valueOf(rs.getString("status"))
 
                         );
+                        driver.setId_driver(rs.getInt("id_driver"));
+
                     }
                     int idLicense = rs.getInt("id_license");
 
@@ -281,16 +282,18 @@ public class DriverDAO {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    driverList.add(new Driver(
-                            rs.getInt("id_driver"),
-                            rs.getInt("num_identification"),
-                            rs.getString("name"),
-                            rs.getString("lastname"),
-                            rs.getString("second_lastname"),
-                            rs.getDate("contratation_date").toLocalDate(),
-                            DriverStatus.valueOf(rs.getString("status"))
+                    Driver driver = new Driver(
+                        rs.getInt("num_identification"),
+                        rs.getString("name"),
+                        rs.getString("lastname"),
+                        rs.getString("second_lastname"),
+                        rs.getDate("contratation_date").toLocalDate(),
+                        DriverStatus.valueOf(rs.getString("status"))
+                    );
+                    driver.setId_driver(rs.getInt("id_driver"));
 
-                    ));
+
+                    driverList.add(driver);
                 }
             }
 
@@ -324,8 +327,7 @@ public class DriverDAO {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    driverList.add(new Driver(
-                            rs.getInt("id_driver"),
+                    Driver driver = new Driver(
                             rs.getInt("num_identification"),
                             rs.getString("name"),
                             rs.getString("lastname"),
@@ -333,7 +335,11 @@ public class DriverDAO {
                             rs.getDate("contratation_date").toLocalDate(),
                             DriverStatus.valueOf(rs.getString("status"))
 
-                    ));
+                    );
+                    driver.setId_driver(rs.getInt("id_driver"));
+
+
+                    driverList.add(driver);
                 }
             }
 
@@ -400,7 +406,7 @@ public class DriverDAO {
                 "VALUES (?,?,?,?,?,?)";
 
         try (Connection conn = Connection_db.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setInt(1, driver.getNum_identification());
             pstmt.setString(2, driver.getName());

@@ -15,9 +15,9 @@ public abstract class Vehicle {
     private VehicleStatus statusVehicle;
     private List<Maintenance> maintenanceHistory;
 
-    public Vehicle (int id_vehicle, String number_plate, String brand, int model, int load_capacity,
+    public Vehicle (String number_plate, String brand, int model, int load_capacity,
                     int mileage, int axles, String fuelType, VehicleStatus statusVehicle) {
-        this.id_vehicle = id_vehicle;
+        this.id_vehicle = -1;
         this.number_plate = number_plate;
         this.brand = brand;
         this.model = model;
@@ -84,6 +84,9 @@ public abstract class Vehicle {
     public VehicleStatus getStatus() { return statusVehicle; };
 
     // --- SETTERS ---
+    public void setId_vehicle (int id_vehicle) {
+        this.id_vehicle = id_vehicle;
+    }
 
     public void setMileage(int mileage) {
         this.mileage = mileage;

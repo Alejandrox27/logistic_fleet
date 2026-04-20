@@ -23,7 +23,6 @@ public class RoutesDAO {
             while (rs.next()) {
 
                 Driver driver = new Driver(
-                        rs.getInt("id_driver"),
                         rs.getInt("num_identification"),
                         rs.getString("name"),
                         rs.getString("lastname"),
@@ -32,11 +31,11 @@ public class RoutesDAO {
                         DriverStatus.valueOf(rs.getString("status"))
 
                 );
+                driver.setId_driver(rs.getInt("id_driver"));
 
                 Vehicle vehicle = null;
                 if (rs.getInt("load_capacity") > 3500) {
                     vehicle = new HeavyTruck(
-                            rs.getInt("id_vehicle"),
                             rs.getString("number_plate"),
                             rs.getString("brand"),
                             rs.getInt("model"),
@@ -45,12 +44,10 @@ public class RoutesDAO {
                             rs.getInt("axles"),
                             rs.getString("fuel_type"),
                             VehicleStatus.valueOf(rs.getString("status"))
-
-
                     );
+                    vehicle.setId_vehicle(rs.getInt("id_vehicle"));
                 } else {
                     vehicle = new DeliveryVan(
-                            rs.getInt("id_vehicle"),
                             rs.getString("number_plate"),
                             rs.getString("brand"),
                             rs.getInt("model"),
@@ -61,6 +58,8 @@ public class RoutesDAO {
                             VehicleStatus.valueOf(rs.getString("status"))
 
                     );
+                    vehicle.setId_vehicle(rs.getInt("id_vehicle"));
+
                 }
 
                 Route route = new Route(

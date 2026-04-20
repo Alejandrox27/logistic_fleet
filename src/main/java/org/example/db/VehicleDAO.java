@@ -31,7 +31,6 @@ public class VehicleDAO {
                 if(v == null) {
                     if (rs.getInt("load_capacity") > 3500) {
                         v = new HeavyTruck(
-                                idV,
                                 rs.getString("number_plate"),
                                 rs.getString("brand"),
                                 rs.getInt("model"),
@@ -42,10 +41,10 @@ public class VehicleDAO {
                                 VehicleStatus.valueOf(rs.getString("status"))
 
                         );
+                        v.setId_vehicle(idV);
                         vehicleMap.put(idV, v);
                     } else {
                         v = new DeliveryVan(
-                                idV,
                                 rs.getString("number_plate"),
                                 rs.getString("brand"),
                                 rs.getInt("model"),
@@ -56,6 +55,7 @@ public class VehicleDAO {
                                 VehicleStatus.valueOf(rs.getString("status"))
 
                         );
+                        v.setId_vehicle(idV);
                         vehicleMap.put(idV, v);
                     }
                 }
@@ -102,7 +102,6 @@ public class VehicleDAO {
                     if(v == null) {
                         if (rs.getInt("load_capacity") > 3500) {
                             v = new HeavyTruck(
-                                    idV,
                                     rs.getString("number_plate"),
                                     rs.getString("brand"),
                                     rs.getInt("model"),
@@ -111,12 +110,11 @@ public class VehicleDAO {
                                     rs.getInt("axles"),
                                     rs.getString("fuel_type"),
                                     VehicleStatus.valueOf(rs.getString("status"))
-
-
                             );
+                            v.setId_vehicle(idV);
+
                         } else {
                             v = new DeliveryVan(
-                                    idV,
                                     rs.getString("number_plate"),
                                     rs.getString("brand"),
                                     rs.getInt("model"),
@@ -127,6 +125,8 @@ public class VehicleDAO {
                                     VehicleStatus.valueOf(rs.getString("status"))
 
                             );
+                            v.setId_vehicle(idV);
+
                         }
                     }
                     int idM = rs.getInt("id_maintenance");
@@ -172,15 +172,19 @@ public class VehicleDAO {
                         int cap = rs.getInt("load_capacity");
 
                         if (cap > 3500) {
-                            v = new HeavyTruck(idV, rs.getString("number_plate"), rs.getString("brand"),
+                            v = new HeavyTruck(rs.getString("number_plate"), rs.getString("brand"),
                                     rs.getInt("model"), cap, rs.getInt("mileage"),
                                     rs.getInt("axles"), rs.getString("fuel_type"),
                                     VehicleStatus.valueOf(rs.getString("status")));
+                            v.setId_vehicle(idV);
+
                         } else {
-                            v = new DeliveryVan(idV, rs.getString("number_plate"), rs.getString("brand"),
+                            v = new DeliveryVan(rs.getString("number_plate"), rs.getString("brand"),
                                     rs.getInt("model"), cap, rs.getInt("mileage"),
                                     rs.getInt("axles"), rs.getString("fuel_type"),
                                     VehicleStatus.valueOf(rs.getString("status")));
+                            v.setId_vehicle(idV);
+
                         }
                     }
 

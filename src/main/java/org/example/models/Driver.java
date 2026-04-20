@@ -14,9 +14,9 @@ public class Driver {
     private DriverStatus status;
     private List<DriverLicense> licenses;
 
-    public Driver(int id_driver, int num_identification, String name, String lastName,
+    public Driver(int num_identification, String name, String lastName,
                   String secondLastName, LocalDate contratationDate, DriverStatus status) {
-        this.id_driver = id_driver;
+        this.id_driver = -1;
         this.num_identification = num_identification;
         this.name = name;
         this.lastName = lastName;
@@ -59,6 +59,9 @@ public class Driver {
     public DriverStatus getStatus() { return status; }
 
     // --- SETTERS ---
+    public void setId_driver (int id_driver) {
+        this.id_driver = id_driver;
+    }
 
     public void setName(String name) {
         this.name = name;
