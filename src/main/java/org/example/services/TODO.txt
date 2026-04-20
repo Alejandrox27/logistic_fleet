@@ -8,8 +8,6 @@ IDriverService
 
     List<Driver> getIdleDriversForMonth(int month): Ejecuta tu SQL de Conductores sin actividad.
 
-EN CONDUCTOR AGREGAR NUEVO CONDUCTOR (Con sus licencias), EN VEHICULO LO MISMO
-
 HACER VALIDACIONES EN SERVICE ANTES DE CREAR ALGO O TRAER ALGO:
 
 Validación de Reglas de Negocio: (Ej: "No puedes asignar una ruta a un conductor si su licencia está vencida").

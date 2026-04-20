@@ -3,13 +3,20 @@ package org.example.services;
 import org.example.Exceptions.DriverExceptions.DriverException;
 import org.example.db.DriverDAO;
 import org.example.models.Driver;
+import org.example.models.DriverLicense;
 import org.example.models.DriverStatus;
+
+import java.util.ArrayList;
 
 public class DriverService implements IDriverService{
     @Override
-    public void createDriver (Driver driver) throws DriverException {
+    public void createDriver (Driver driver, ArrayList<DriverLicense> licenses) throws DriverException {
         Driver existingDriver = DriverDAO.getDriverByNumId(driver.getNum_identification());
         String regex = "^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+$";
+
+        if (licenses.isEmpty()) {
+            throw new DriverException("The driver must have at least one category in his license");
+        }
 
         //VALIDATIONS WITH THE NUMBER OF IDENTIFICATION
         if (driver.getNum_identification() <= 0) {
@@ -51,7 +58,15 @@ public class DriverService implements IDriverService{
         driver.setStatus(DriverStatus.AVAILABLE);
 
         // CREATE THE DRIVER
-        DriverDAO.saveDriver(driver);
+        int generatedId = DriverDAO.saveDriver(driver);
+
+        if (generatedId != -1) {
+            for (DriverLicense lic: licenses) {
+                int categoryId = DriverDAO.getCategoryIdByName(lic.getCategory());
+
+                DriverDAO.saveLicense(generatedId, categoryId, lic);
+            }
+        }
         System.out.println("The driver was created succesfully");
     }
 }

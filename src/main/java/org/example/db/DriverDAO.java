@@ -173,6 +173,27 @@ public class DriverDAO {
         return driver;
     }
 
+    public static int getCategoryIdByName(String categoryName) {
+        int id = -1;
+        String sql = "SELECT id_category FROM license_categories WHERE category_name = ?";
+
+        try (Connection conn = Connection_db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, categoryName);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    id = rs.getInt("id_category");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar categoría: " + e.getMessage());
+        }
+
+        return id;
+    }
+
     public static List<DriverFatigueDTO> getReportDriverFatigue () {
         List<DriverFatigueDTO> DriversReportList = new ArrayList<>();
 
@@ -374,7 +395,7 @@ public class DriverDAO {
         }
     }
 
-    public static void saveDriver (Driver driver) {
+    public static int saveDriver (Driver driver) {
         String sql = "INSERT INTO drivers (num_identification, name, lastname, second_lastname, contratation_date, status) " +
                 "VALUES (?,?,?,?,?,?)";
 
@@ -390,8 +411,34 @@ public class DriverDAO {
 
             pstmt.executeUpdate();
 
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+
+    public static void saveLicense(int id_driver, int id_category, DriverLicense license) {
+        String sql = "INSERT INTO driver_licenses (id_driver, id_category, issue_date, expiry_date, description) " +
+                "VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = Connection_db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id_driver);
+            pstmt.setInt(2, id_category);
+            pstmt.setDate(3, java.sql.Date.valueOf(license.getIssueDate()));
+            pstmt.setDate(4, java.sql.Date.valueOf(license.getExpiryDate()));
+            pstmt.setString(5, license.getDescription());
+
+            pstmt.executeUpdate();
+            System.out.println("License category ID " + id_category + " saved for driver ID " + id_driver);
+
+        } catch (SQLException e) {
+            System.err.println("Error saving license: " + e.getMessage());
         }
     }
 }
