@@ -31,20 +31,20 @@ public class DriverService implements IDriverService{
 
         // VALIDATIONS FOR THE LASTNAME
         if (driver.getLastName() == null || driver.getLastName().trim().isEmpty()) {
-            throw new DriverException("the name cannot be empty.");
+            throw new DriverException("the lastname cannot be empty.");
         }
 
         if (!driver.getLastName().matches(regex)) {
-            throw new DriverException("the name: '" + driver.getName() + "' has especial chars.");
+            throw new DriverException("the lastname: '" + driver.getLastName() + "' has especial chars.");
         }
 
         // VALIDATIONS FOR THE SECOND LASTNAME
         if (driver.getSecondLastName() == null || driver.getSecondLastName().trim().isEmpty()) {
-            throw new DriverException("the name cannot be empty.");
+            throw new DriverException("the second lastname cannot be empty.");
         }
 
         if (!driver.getSecondLastName().matches(regex)) {
-            throw new DriverException("the name: '" + driver.getName() + "' has especial chars.");
+            throw new DriverException("the second lastname: '" + driver.getSecondLastName() + "' has especial chars.");
         }
 
         // Set default status (AVAILABLE)
