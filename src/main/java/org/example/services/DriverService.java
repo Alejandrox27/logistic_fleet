@@ -6,7 +6,10 @@ import org.example.models.Driver;
 import org.example.models.DriverLicense;
 import org.example.models.DriverStatus;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DriverService implements IDriverService{
     @Override
@@ -61,8 +64,32 @@ public class DriverService implements IDriverService{
         int generatedId = DriverDAO.saveDriver(driver);
 
         if (generatedId != -1) {
-            for (DriverLicense lic: licenses) {
+            // 1. Usamos un Set para verificar que no haya categorías duplicadas (Propiedad de Conjuntos)
+            // En matemáticas: A ∩ B = Ø (no debe haber intersección de categorías iguales)
+            Set<String> uniqueCategories = new HashSet<>();
+
+            for (DriverLicense lic : licenses) {
+                // Validación A: Categoría Duplicada
+                if (!uniqueCategories.add(lic.getCategory())) {
+                    throw new DriverException("Error: The category '" + lic.getCategory() + "' is duplicated in the list");
+                }
+
+                // Validación B: Relación de Orden de Fechas
+                if (!lic.getIssueDate().isBefore(lic.getExpiryDate())) {
+                    throw new DriverException("Error at category " + lic.getCategory() +
+                            ": the Expiry date can not be before the issue date");
+                }
+
+                // Validación C: Licencia no vencida (Opcional, según tu lógica de negocio)
+                if (lic.getExpiryDate().isBefore(LocalDate.now())) {
+                    System.out.println("Warning: The license " + lic.getCategory() + " is already expired.");
+                }
+
                 int categoryId = DriverDAO.getCategoryIdByName(lic.getCategory());
+
+                if (categoryId == -1) {
+                    throw new DriverException("Error: the category '" + lic.getCategory() + "' doesn't exists in the system.");
+                }
 
                 DriverDAO.saveLicense(generatedId, categoryId, lic);
             }

@@ -2,8 +2,11 @@ package org.example.services;
 
 import org.example.Exceptions.VehicleExceptions.VehicleException;
 import org.example.db.VehicleDAO;
+import org.example.models.Maintenance;
 import org.example.models.Vehicle;
 import org.example.models.VehicleStatus;
+
+import java.util.ArrayList;
 
 public class VehicleService implements IVehicleService {
 
