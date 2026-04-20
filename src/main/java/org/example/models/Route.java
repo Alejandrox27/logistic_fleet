@@ -13,9 +13,9 @@ public class Route {
     private Driver driver;
 
     // --- CONSTRUCTOR ---
-    public Route(int id_route, String origin, String destination, double distance,
+    public Route(String origin, String destination, double distance,
                  double fuel_consumed, LocalDate travelDate, Vehicle vehicle, Driver driver) {
-        this.id_route = id_route;
+        this.id_route = -1;
         this.origin = origin;
         this.destination = destination;
         this.distance = distance;
@@ -60,6 +60,9 @@ public class Route {
     }
 
     // --- SETTERS ---
+    public void setId_route(int id_route) {
+        this.id_route = id_route;
+    }
 
     public void setOrigin(String origin) {
         this.origin = origin;

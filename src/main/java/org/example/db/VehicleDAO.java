@@ -64,12 +64,13 @@ public class VehicleDAO {
 
                 if (idM > 0) {
                     Maintenance m = new Maintenance(
-                            idM,
                             rs.getDate("date").toLocalDate(),
                             rs.getString("description"),
                             rs.getDouble("cost"),
                             v
                     );
+
+                    m.setId_maintenance(idM);
 
                     v.addMaintenance(m);
                 }
@@ -132,12 +133,12 @@ public class VehicleDAO {
 
                     if (idM > 0) {
                         Maintenance m = new Maintenance(
-                                idM,
                                 rs.getDate("date").toLocalDate(),
                                 rs.getString("description"),
                                 rs.getDouble("cost"),
                                 v
                         );
+                        m.setId_maintenance(idM);
 
                         v.addMaintenance(m);
                     }
@@ -188,12 +189,13 @@ public class VehicleDAO {
                         java.sql.Date sqlDate = rs.getDate("m_date");
                         if (sqlDate != null) {
                             Maintenance m = new Maintenance(
-                                    idM,
                                     sqlDate.toLocalDate(),
                                     rs.getString("m_desc"),
                                     rs.getDouble("m_cost"),
                                     v
                             );
+                            m.setId_maintenance(idM);
+
                             v.addMaintenance(m);
                         }
                     }
@@ -204,6 +206,7 @@ public class VehicleDAO {
         }
         return v;
     }
+
     public static List<VehiclesRiskDTO> getVehiclesWithRisk () {
         List<VehiclesRiskDTO> vehiclesRiskDTOList = new ArrayList<>();
 
@@ -406,4 +409,22 @@ public class VehicleDAO {
         }
     }
 
+    public static void saveMaintenance(int id_vehicle, Maintenance m) {
+        String sql = "INSERT INTO maintenances (id_vehicle, date, description, cost) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = Connection_db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id_vehicle);
+            pstmt.setDate(2, java.sql.Date.valueOf(m.getDate()));
+            pstmt.setString(3, m.getDescription());
+            pstmt.setDouble(4, m.getCost());
+
+            pstmt.executeUpdate();
+            System.out.println("✅ Maintenance recorded for vehicle ID: " + id_vehicle);
+
+        } catch (SQLException e) {
+            System.err.println("Error saving maintenance: " + e.getMessage());
+        }
+    }
 }

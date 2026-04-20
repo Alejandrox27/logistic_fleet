@@ -6,6 +6,7 @@ import org.example.models.Maintenance;
 import org.example.models.Vehicle;
 import org.example.models.VehicleStatus;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class VehicleService implements IVehicleService {
@@ -37,5 +38,16 @@ public class VehicleService implements IVehicleService {
         // 5. SAVE
         VehicleDAO.saveVehicle(vehicle);
         System.out.println("✅ Vehicle " + vehicle.getNumber_plate() + " created successfully.");
+    }
+
+    @Override
+    public void registerMaintenance(Vehicle vehicle, Maintenance m) throws VehicleException {
+        if (m.getDate().isAfter(LocalDate.now())) {
+            throw new VehicleException("The maintenance date cannot be in the future.");
+        }
+
+        VehicleDAO.saveMaintenance(vehicle.getIdVehicle(), m);
+
+        vehicle.addMaintenance(m);
     }
 }

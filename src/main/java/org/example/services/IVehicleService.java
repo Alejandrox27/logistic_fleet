@@ -8,4 +8,5 @@ import java.util.ArrayList;
 
 public interface IVehicleService {
     void createVehicle (Vehicle vehicle) throws VehicleException;
+    void registerMaintenance (Vehicle vehicle, Maintenance m) throws  VehicleException;
 }

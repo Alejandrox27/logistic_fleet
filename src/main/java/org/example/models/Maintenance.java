@@ -10,9 +10,9 @@ public class Maintenance {
     private Vehicle vehicle;
 
     // --- CONSTRUCTOR ---
-    public Maintenance(int id_maintenance, LocalDate date, String description,
+    public Maintenance(LocalDate date, String description,
                        double cost, Vehicle vehicle) {
-        this.id_maintenance = id_maintenance;
+        this.id_maintenance = -1;
         this.date = date;
         this.description = description;
         this.cost = cost;
@@ -42,6 +42,10 @@ public class Maintenance {
     }
 
     // --- SETTERS ---
+
+    public void setId_maintenance (int id_maintenance) {
+        this.id_maintenance = id_maintenance;
+    }
 
     public void setDate(LocalDate date) {
         this.date = date;

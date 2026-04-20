@@ -64,7 +64,6 @@ public class RoutesDAO {
                 }
 
                 Route route = new Route(
-                        rs.getInt("id_route"),
                         rs.getString("origin"),
                         rs.getString("destination"),
                         rs.getDouble("distance"),
@@ -73,6 +72,8 @@ public class RoutesDAO {
                         vehicle,
                         driver
                 );
+
+                route.setId_route(rs.getInt("id_route"));
                 routesList.add(route);
             }
         } catch (SQLException e) {
