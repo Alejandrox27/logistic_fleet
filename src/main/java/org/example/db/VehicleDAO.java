@@ -151,6 +151,59 @@ public class VehicleDAO {
         return v;
     }
 
+    public static Vehicle getVehicleByPlate(String plate) {
+        Vehicle v = null;
+
+        String sql = "SELECT v.*, m.id_maintenance, m.date AS m_date, m.description AS m_desc, m.cost AS m_cost " +
+                "FROM vehicles v " +
+                "LEFT JOIN maintenances m ON v.id_vehicle = m.id_vehicle " +
+                "WHERE v.number_plate = ?";
+
+        try (Connection conn = Connection_db.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, plate);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    if (v == null) {
+                        int idV = rs.getInt("id_vehicle");
+                        int cap = rs.getInt("load_capacity");
+
+                        if (cap > 3500) {
+                            v = new HeavyTruck(idV, rs.getString("number_plate"), rs.getString("brand"),
+                                    rs.getInt("model"), cap, rs.getInt("mileage"),
+                                    rs.getInt("axles"), rs.getString("fuel_type"),
+                                    VehicleStatus.valueOf(rs.getString("status")));
+                        } else {
+                            v = new DeliveryVan(idV, rs.getString("number_plate"), rs.getString("brand"),
+                                    rs.getInt("model"), cap, rs.getInt("mileage"),
+                                    rs.getInt("axles"), rs.getString("fuel_type"),
+                                    VehicleStatus.valueOf(rs.getString("status")));
+                        }
+                    }
+
+                    int idM = rs.getInt("id_maintenance");
+                    if (idM > 0) {
+                        java.sql.Date sqlDate = rs.getDate("m_date");
+                        if (sqlDate != null) {
+                            Maintenance m = new Maintenance(
+                                    idM,
+                                    sqlDate.toLocalDate(),
+                                    rs.getString("m_desc"),
+                                    rs.getDouble("m_cost"),
+                                    v
+                            );
+                            v.addMaintenance(m);
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error VehicleDAO: " + e.getMessage());
+        }
+        return v;
+    }
     public static List<VehiclesRiskDTO> getVehiclesWithRisk () {
         List<VehiclesRiskDTO> vehiclesRiskDTOList = new ArrayList<>();
 
@@ -352,4 +405,5 @@ public class VehicleDAO {
             System.err.println("Error saving vehicle: " + e.getMessage());
         }
     }
+
 }
