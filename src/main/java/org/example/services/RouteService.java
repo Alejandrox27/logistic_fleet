@@ -13,13 +13,12 @@ import org.example.db.RoutesDAO;
 import org.example.db.VehicleDAO;
 import org.example.models.*;
 import org.example.models.dto.DriverFatigueDTO;
-import java.time.LocalDate;
 
 import java.util.List;
 
 public class RouteService implements IRouteService {
     @Override
-    public void createRoute(Route route) throws VehicleException, DriverException, RouteException, ExpiredLicenseException {
+    public void createRoute(Route route) throws VehicleException, DriverException, RouteException {
         VehicleStatus currentStatusVehicle = VehicleDAO.checkDisponibility(route.getVehicle().getIdVehicle());
         DriverFatigueDTO tiredDriver = DriverDAO.getReportDriverFatigue(route.getDriver().getIdDriver());
         DriverStatus currentStatusDriver = DriverDAO.checkDisponibility(route.getDriver().getIdDriver());

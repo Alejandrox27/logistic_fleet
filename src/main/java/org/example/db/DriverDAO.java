@@ -323,4 +323,25 @@ public class DriverDAO {
             System.err.println("❌ Error updating driver status: " + e.getMessage());
         }
     }
+
+    public static void saveDriver (Driver driver) {
+        String sql = "INSERT INTO drivers (num_identification, name, lastname, second_lastname, contratation_date, status) " +
+                "VALUES (?,?,?,?,?,?)";
+
+        try (Connection conn = Connection_db.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, driver.getNum_identification());
+            pstmt.setString(2, driver.getName());
+            pstmt.setString(3, driver.getLastName());
+            pstmt.setString(4, driver.getSecondLastName());
+            pstmt.setDate(5, java.sql.Date.valueOf(driver.getContratationDate()));
+            pstmt.setString(6, driver.getStatus().name());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
