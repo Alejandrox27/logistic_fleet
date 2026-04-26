@@ -5,5 +5,7 @@ public enum DriverStatus {
 
     IN_ROUTE,
 
-    OFF_DUTY
+    OFF_DUTY,
+
+    RESTING
 }

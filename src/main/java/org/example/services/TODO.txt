@@ -1,18 +1,2 @@
 IDriverService
-    boolean isDriverEligible(int driverId, int vehicleId): Clave. El Service consulta la licencia del conductor y la categoría del vehículo. Si el camión es C3 y el chofer tiene A2, el Service retorna false y bloquea la operación.
-
     List<Driver> getIdleDriversForMonth(int month): Ejecuta tu SQL de Conductores sin actividad.
-
-HACER VALIDACIONES EN SERVICE ANTES DE CREAR ALGO O TRAER ALGO:
-
-Validación de Reglas de Negocio: (Ej: "No puedes asignar una ruta a un conductor si su licencia está vencida").
- El SQL no sabe de fechas de vencimiento al insertar, el Service sí.
-
-Coordinación de DAOs:
-(Ej: Para registrar una ruta, el Service debe hablar con VehicleDAO para ver si hay gasolina y con DriverDAO para ver si el chofer está libre).
-
-Aunque el SQL filtra, el Service permite filtros dinámicos que vienen desde la interfaz.
-
-Por ejemplo, en tu reporte de Eficiencia, el Service podría recibir parámetros como:
-
-getEfficiencyReport(double minKmPerLiter): El SQL trae todo, pero el Service filtra en Java para mostrar solo los que rinden menos de X cantidad, o calcula la media general para comparar.

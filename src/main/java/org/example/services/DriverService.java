@@ -5,10 +5,12 @@ import org.example.db.DriverDAO;
 import org.example.models.Driver;
 import org.example.models.DriverLicense;
 import org.example.models.DriverStatus;
+import org.example.models.dto.DriverFatigueDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class DriverService implements IDriverService{
@@ -95,5 +97,19 @@ public class DriverService implements IDriverService{
             }
         }
         System.out.println("The driver was created succesfully");
+    }
+
+    @Override
+    public List<DriverFatigueDTO> getDriversWithFatigueRisk() {
+        List<DriverFatigueDTO> fatigueReport = DriverDAO.getReportDriverFatigue();
+
+        for (DriverFatigueDTO dto : fatigueReport) {
+            DriverDAO.updateStatus(dto.getIdDriver(), DriverStatus.RESTING);
+
+            System.out.println("⚠️ Alert: Driver " + dto.getName() + " " + dto.getLastname() +
+                    " moved to RESTING status due to fatigue (" + dto.getTotalMileage() + " km).");
+        }
+
+        return fatigueReport;
     }
 }
