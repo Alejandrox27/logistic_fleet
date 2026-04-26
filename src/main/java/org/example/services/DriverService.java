@@ -112,4 +112,34 @@ public class DriverService implements IDriverService{
 
         return fatigueReport;
     }
+
+    @Override
+    public List<Driver> getInactiveDriversCurrentMonth() {
+        List<Driver> inactiveDrivers = DriverDAO.GetDriversNotActiveMonth();
+
+        if (inactiveDrivers.isEmpty()) {
+            System.out.println("ℹ️ All drivers have been active this month.");
+        } else {
+            System.out.println("📋 Found " + inactiveDrivers.size() + " inactive drivers this month.");
+        }
+
+        return inactiveDrivers;
+    }
+
+    @Override
+    public List<Driver> getInactiveDriversByPeriod(int month, int year) {
+        if (month < 1 || month > 12) {
+            throw new IllegalArgumentException("Invalid month. Must be between 1 and 12.");
+        }
+
+        List<Driver> inactiveDrivers = DriverDAO.GetDriversNotActiveMonth(month, year);
+
+        if (inactiveDrivers.isEmpty()) {
+            System.out.println("ℹ️ All drivers have been active this month.");
+        } else {
+            System.out.println("📋 Found " + inactiveDrivers.size() + " inactive drivers this month.");
+        }
+
+        return inactiveDrivers;
+    }
 }

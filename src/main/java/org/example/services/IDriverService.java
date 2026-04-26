@@ -12,4 +12,8 @@ public interface IDriverService {
     void createDriver (Driver driver, ArrayList<DriverLicense> licenses) throws DriverException;
 
     List<DriverFatigueDTO> getDriversWithFatigueRisk();
+
+    List<Driver> getInactiveDriversCurrentMonth();
+
+    List<Driver> getInactiveDriversByPeriod(int month, int year);
 }
