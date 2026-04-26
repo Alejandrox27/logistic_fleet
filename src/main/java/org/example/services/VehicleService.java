@@ -54,6 +54,12 @@ public class VehicleService implements IVehicleService {
 
     @Override
     public List<VehiclesRiskDTO> getVehiclesRequiringMaintenance () {
-        return VehicleDAO.getVehiclesWithRisk();
+        List<VehiclesRiskDTO> vehiclesWithRiskDTO = VehicleDAO.getVehiclesWithRisk();
+
+        for (VehiclesRiskDTO dto: vehiclesWithRiskDTO) {
+            VehicleDAO.updateStatus(dto.getIdVehicle(), VehicleStatus.MAINTENANCE_REQUIRED);
+        }
+
+        return vehiclesWithRiskDTO;
     }
 }
