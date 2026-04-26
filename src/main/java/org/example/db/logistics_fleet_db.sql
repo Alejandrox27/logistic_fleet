@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-04-2026 a las 01:21:31
+-- Tiempo de generación: 26-04-2026 a las 18:38:24
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -34,7 +34,7 @@ CREATE TABLE `drivers` (
   `lastname` varchar(50) NOT NULL,
   `second_lastname` varchar(50) DEFAULT NULL,
   `contratation_date` date DEFAULT NULL,
-  `status` enum('AVAILABLE','IN_ROUTE','OFF_DUTY') DEFAULT 'AVAILABLE'
+  `status` enum('AVAILABLE','IN_ROUTE','OFF_DUTY','RESTING') DEFAULT 'AVAILABLE'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -378,7 +378,7 @@ CREATE TABLE `vehicles` (
   `mileage` int(7) NOT NULL,
   `axles` int(11) DEFAULT NULL,
   `fuel_type` varchar(50) DEFAULT NULL,
-  `status` enum('AVAILABLE','IN_ROUTE','MAINTENANCE') DEFAULT 'AVAILABLE'
+  `status` enum('AVAILABLE','IN_ROUTE','MAINTENANCE','MAINTENANCE_REQUIRED') DEFAULT 'AVAILABLE'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

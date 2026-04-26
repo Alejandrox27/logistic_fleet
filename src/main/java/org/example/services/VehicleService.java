@@ -5,12 +5,28 @@ import org.example.db.VehicleDAO;
 import org.example.models.Maintenance;
 import org.example.models.Vehicle;
 import org.example.models.VehicleStatus;
+import org.example.models.dto.MostWastefulBrandsDTO;
+import org.example.models.dto.VehicleOperatingCostDTO;
+import org.example.models.dto.VehicleVersatilityDTO;
 import org.example.models.dto.VehiclesRiskDTO;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class VehicleService implements IVehicleService {
+
+    @Override
+    public List<Vehicle> getAllVehicles() {
+        List<Vehicle> vehicles = VehicleDAO.getAllVehiclesWithMaintenances();
+
+        if (vehicles.isEmpty()) {
+            System.out.println("ℹ️ No vehicles registered in the database.");
+        } else {
+            System.out.println("📊 Total vehicles retrieved: " + vehicles.size());
+        }
+
+        return vehicles;
+    }
 
     @Override
     public void createVehicle(Vehicle vehicle) throws VehicleException {
@@ -61,5 +77,37 @@ public class VehicleService implements IVehicleService {
         }
 
         return vehiclesWithRiskDTO;
+    }
+
+    @Override
+    public List<MostWastefulBrandsDTO> getRankingMostWastefulBrands() {
+        List<MostWastefulBrandsDTO> ranking = VehicleDAO.getRankingMostWastefulBrands();
+
+        if (ranking.isEmpty()) {
+            System.out.println("ℹ️ No data available to calculate fuel consumption by brand.");
+        }
+
+        return ranking;
+    }
+
+    @Override
+    public VehicleVersatilityDTO getMostVersatileVehicle() {
+        VehicleVersatilityDTO versatile = VehicleDAO.getMostVersatileVehicle();
+
+        if (versatile != null) {
+            System.out.println("🏆 Most Versatile Vehicle: " + versatile.getBrand() +
+                    " (" + versatile.getVisitedPlaces() + " destinations)");
+        }
+
+        return versatile;
+    }
+
+    @Override
+    public List<VehicleOperatingCostDTO> getReportOperatingCosts() {
+        List<VehicleOperatingCostDTO> report = VehicleDAO.getReportOperatingCosts();
+
+        System.out.println("💰 Operating costs report generated for " + report.size() + " vehicles.");
+
+        return report;
     }
 }
