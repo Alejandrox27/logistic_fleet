@@ -5,9 +5,10 @@ import org.example.db.VehicleDAO;
 import org.example.models.Maintenance;
 import org.example.models.Vehicle;
 import org.example.models.VehicleStatus;
+import org.example.models.dto.VehiclesRiskDTO;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 public class VehicleService implements IVehicleService {
 
@@ -52,7 +53,7 @@ public class VehicleService implements IVehicleService {
     }
 
     @Override
-    public void getVehiclesRequiringMaintenance (Vehicle vehicle) {
-
+    public List<VehiclesRiskDTO> getVehiclesRequiringMaintenance () {
+        return VehicleDAO.getVehiclesWithRisk();
     }
 }
