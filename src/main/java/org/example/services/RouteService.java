@@ -13,6 +13,7 @@ import org.example.db.RoutesDAO;
 import org.example.db.VehicleDAO;
 import org.example.models.*;
 import org.example.models.dto.DriverFatigueDTO;
+import org.example.models.dto.EfficiencyReportDTO;
 
 import java.util.List;
 
@@ -73,5 +74,32 @@ public class RouteService implements IRouteService {
         RoutesDAO.saveRoute(route);
         VehicleDAO.updateStatus(route.getVehicle().getIdVehicle(), VehicleStatus.IN_ROUTE);
         DriverDAO.updateStatus(route.getDriver().getIdDriver(), DriverStatus.IN_ROUTE);
+    }
+
+    @Override
+    public List<Route> getAllRoutes() {
+        List<Route> routes = RoutesDAO.getAllRoutes();
+
+        if (routes.isEmpty()) {
+            System.out.println("ℹ️ No routes registered in the system yet.");
+        }
+
+        return routes;
+    }
+
+    @Override
+    public List<EfficiencyReportDTO> getEfficiencyReport() {
+        List<EfficiencyReportDTO> report = RoutesDAO.getEfficiencyReport();
+
+        System.out.println("📊 Efficiency Report generated for drivers with more than 5 routes.");
+
+        for (EfficiencyReportDTO dto : report) {
+            if (dto.getEfficiencyAverage() < 0.15) {
+                System.out.println("🌟 High Performance: " + dto.getDriverName() +
+                        " with vehicle " + dto.getVehicleBrand());
+            }
+        }
+
+        return report;
     }
 }

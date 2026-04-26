@@ -13,7 +13,7 @@ public class DriverFatigueDTO {
         this.totalMileage = totalMileage;
     }
 
-    // Getters necesarios para la lógica de Services
+    // GETTERS
     public int getIdDriver() { return idDriver; }
     public String getName() { return name; }
     public String getLastname() { return lastname; }
@@ -21,7 +21,7 @@ public class DriverFatigueDTO {
 
     @Override
     public String toString() {
-        // Formato de tabla: ID | Nombre Completo | Kilometraje
+        // TABLE FORMAT
         return String.format("| %-5d | %-25s | %-12.2f km |",
                 idDriver, name + " " + lastname, totalMileage);
     }

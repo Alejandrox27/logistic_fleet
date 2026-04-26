@@ -1,2 +1,0 @@
-IDriverService
-    List<Driver> getIdleDriversForMonth(int month): Ejecuta tu SQL de Conductores sin actividad.
