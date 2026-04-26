@@ -50,4 +50,9 @@ public class VehicleService implements IVehicleService {
 
         vehicle.addMaintenance(m);
     }
+
+    @Override
+    public void getVehiclesRequiringMaintenance (Vehicle vehicle) {
+
+    }
 }

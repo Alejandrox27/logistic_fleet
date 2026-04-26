@@ -5,5 +5,7 @@ public enum VehicleStatus {
 
     IN_ROUTE,
 
-    MAINTENANCE
+    MAINTENANCE,
+
+    MAINTENANCE_REQUIRED
 }
