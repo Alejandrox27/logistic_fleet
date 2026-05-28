@@ -9,6 +9,14 @@ public class MostWastefulBrandsDTO {
         this.averageFuelConsumed = averageFuelConsumed;
     }
 
+    public String getBrand () {
+        return this.brand;
+    }
+
+    public double getAverageFuelConsumed () {
+        return this.averageFuelConsumed;
+    }
+
     @Override
     public String toString() {
         return String.format("| %-15s | %-5.4f |",
