@@ -3,7 +3,11 @@ package org.example;
 import org.example.Exceptions.DriverExceptions.DriverException;
 import org.example.Exceptions.RouteException.RouteException;
 import org.example.Exceptions.VehicleExceptions.VehicleException;
+import org.example.models.Route;
 import org.example.models.dto.*;
+import org.example.models.graphs.City;
+import org.example.models.graphs.CityGraph;
+import org.example.models.views.RouteMapVisualizer;
 import org.example.services.DriverService;
 import org.example.services.RouteService;
 import org.example.services.VehicleService;
@@ -132,6 +136,7 @@ public class Main {
         System.out.println("\n--- ROUTE MENU ---");
         System.out.println("1. View All Routes");
         System.out.println("2. Efficiency Report");
+        System.out.println("3. 🌐 VIEW VISUAL ROUTE MAP (GraphStream)");
         System.out.print("Select an option: ");
 
         int opt = Integer.parseInt(scanner.nextLine());
@@ -146,8 +151,62 @@ public class Main {
                 List<EfficiencyReportDTO> efficiency = routeService.getEfficiencyReport();
                 efficiency.forEach(e -> System.out.println(e.toString()));
                 break;
+            case 3:
+                visualizeDatabaseGraph(); // Metodo para mostrar el grafo de las rutas
+                break;
             default:
                 System.out.println("⚠️ Invalid route option.");
         }
+    }
+
+    // --- MÉTODO PARA CARGAR EL GRAFO DESDE LA BASE DE DATOS Y MOSTRARLO ---
+    private static void visualizeDatabaseGraph() {
+        System.out.println("\n🌐 Fetching routes from database and generating graph...");
+
+        // 1. Obtenemos la lista de rutas reales de la base de datos
+        List<Route> dbRoutes = routeService.getAllRoutes();
+
+        if (dbRoutes.isEmpty()) {
+            System.out.println("⚠️ No routes found in the database to build a map.");
+            return;
+        }
+
+        // 2. Instanciamos nuestro modelo matemático del Grafo
+        CityGraph cityGraph = new CityGraph();
+
+        // 3. Estructura auxiliar para no duplicar Ciudades y asignarles un ID único
+        // Mapea el nombre de la ciudad (String) -> Al objeto Ciudad (City)
+        java.util.Map<String, City> uniqueCities = new java.util.HashMap<>();
+        int cityIdCounter = 1;
+
+        // 4. Recorremos las rutas de la base de datos para armar el Grafo
+        for (Route route : dbRoutes) {
+            String originName = route.getOrigin();
+            String destName = route.getDestination();
+            double distance = route.getDistance();
+            int routeId = route.getId_route();
+
+            // Si la ciudad origen no ha sido creada en memoria, la creamos y le asignamos un ID
+            if (!uniqueCities.containsKey(originName)) {
+                uniqueCities.put(originName, new City(cityIdCounter++, originName));
+            }
+            // Lo mismo para la ciudad destino
+            if (!uniqueCities.containsKey(destName)) {
+                uniqueCities.put(destName, new City(cityIdCounter++, destName));
+            }
+
+            // Obtenemos los objetos City correspondientes
+            City originCity = uniqueCities.get(originName);
+            City destinationCity = uniqueCities.get(destName);
+
+            // Agregamos la conexión bidireccional (Ida y Vuelta) al Grafo Matemático
+            // Usamos el id de la ruta para identificar la arista
+            cityGraph.addTwoWayRoad(originCity, destinationCity, distance, routeId, routeId + 1000);
+        }
+
+        // 5. ¡Llamamos a la Vista para dibujar el Grafo interactivo!
+        System.out.println("🎨 Launching visual map window...");
+        RouteMapVisualizer visualizer = new RouteMapVisualizer();
+        visualizer.drawGraph(cityGraph);
     }
 }
