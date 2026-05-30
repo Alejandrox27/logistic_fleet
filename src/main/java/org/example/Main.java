@@ -3,7 +3,7 @@ package org.example;
 import org.example.Exceptions.DriverExceptions.DriverException;
 import org.example.Exceptions.RouteException.RouteException;
 import org.example.Exceptions.VehicleExceptions.VehicleException;
-import org.example.models.Route;
+import org.example.models.*;
 import org.example.models.dto.*;
 import org.example.models.graphs.City;
 import org.example.models.graphs.CityGraph;
@@ -67,13 +67,15 @@ public class Main {
     }
 
     // --- VEHICLE MENU ---
-    private static void vehicleMenu(Scanner scanner) {
+    private static void vehicleMenu(Scanner scanner) throws VehicleException {
         System.out.println("\n--- VEHICLE MENU ---");
         System.out.println("1. View All Vehicles");
         System.out.println("2. Run Maintenance Risk Report (Auto-blocks vehicles)");
         System.out.println("3. Ranking: Most Wasteful Brands");
         System.out.println("4. Most Versatile Vehicle");
         System.out.println("5. Operating Costs Report");
+        System.out.println("6. Create new vehicle");
+        System.out.println("7. Register maintenance");
         System.out.print("Select an option: ");
 
         int opt = Integer.parseInt(scanner.nextLine());
@@ -101,6 +103,39 @@ public class Main {
             case 5:
                 List<VehicleOperatingCostDTO> costs = vehicleService.getReportOperatingCosts();
                 costs.forEach(c -> System.out.println(c.getBrand() + " (" + c.getNumberPlate() + ") Total Cost: $" + c.getTotalOperatingCost()));
+                break;
+            case 6:
+                Vehicle newVehicle = null;
+                System.out.print("Enter Plate (e.g., AAA123): ");
+                String number_plate = scanner.nextLine();
+                System.out.print("Enter Brand: ");
+                String brand = scanner.nextLine();
+                System.out.print("Enter Model: ");
+                int model = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter Load Capacity (kg): ");
+                int capacity = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter Mileage (km): ");
+                int mileage = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter fuel type: ");
+                String fuel_type = scanner.nextLine();
+                System.out.println("Enter number of axles");
+                int axles = Integer.parseInt(scanner.nextLine());
+
+                if (capacity > 3500) {
+                    newVehicle = new HeavyTruck(number_plate, brand, model, capacity, mileage, axles, fuel_type, VehicleStatus.AVAILABLE);
+                } else {
+                    newVehicle = new DeliveryVan(number_plate, brand, model, capacity, mileage, axles, fuel_type, VehicleStatus.AVAILABLE);
+                }
+
+                try {
+                        vehicleService.createVehicle(newVehicle);
+                    } catch (VehicleException e) {
+                    System.out.println("Error: " + e.getMessage());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+            case 7:
                 break;
             default:
                 System.out.println("⚠️ Invalid vehicle option.");

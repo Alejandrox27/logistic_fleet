@@ -84,6 +84,12 @@ public abstract class Vehicle {
     public VehicleStatus getStatus() { return statusVehicle; };
 
     // --- SETTERS ---
+    public void setNumber_plate (String number_plate) {this.number_plate = number_plate;}
+
+    public void setBrand (String brand) {this.brand = brand;}
+
+    public void setModel (int model) {this.model = model;}
+
     public void setId_vehicle (int id_vehicle) {
         this.id_vehicle = id_vehicle;
     }
