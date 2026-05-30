@@ -29,6 +29,19 @@ public class VehicleService implements IVehicleService {
     }
 
     @Override
+    public Vehicle getVehicleById(int idVehicle) throws VehicleException {
+        // 1. Llamamos al DAO que se encarga de la base de datos
+        Vehicle vehicle = VehicleDAO.getVehicleById(idVehicle);
+
+        // 2. Aplicamos la lógica de negocio (Validación)
+        if (vehicle == null) {
+            throw new VehicleException("Error: The vehicle with ID " + idVehicle + " does not exist in the database.");
+        }
+
+        return vehicle;
+    }
+
+    @Override
     public void createVehicle(Vehicle vehicle) throws VehicleException {
         // 1. VALIDATE IF THE PLATE ALREADY EXISTS
         if (VehicleDAO.getVehicleByPlate(vehicle.getNumber_plate()) != null) {
@@ -65,7 +78,18 @@ public class VehicleService implements IVehicleService {
 
         VehicleDAO.saveMaintenance(vehicle.getIdVehicle(), m);
 
+        vehicle.setStatus(VehicleStatus.MAINTENANCE);
+
+        VehicleDAO.updateStatus(vehicle.getIdVehicle(), VehicleStatus.MAINTENANCE);
+
         vehicle.addMaintenance(m);
+    }
+
+    @Override
+    public void changeStatus (Vehicle vehicle, VehicleStatus newStatus) {
+        vehicle.setStatus(newStatus);
+
+        VehicleDAO.updateStatus(vehicle.getIdVehicle(), newStatus);
     }
 
     @Override

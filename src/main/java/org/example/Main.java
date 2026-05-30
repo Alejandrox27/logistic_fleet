@@ -12,6 +12,7 @@ import org.example.services.DriverService;
 import org.example.services.RouteService;
 import org.example.services.VehicleService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -76,9 +77,13 @@ public class Main {
         System.out.println("5. Operating Costs Report");
         System.out.println("6. Create new vehicle");
         System.out.println("7. Register maintenance");
+        System.out.println("8. Change vehicle status to AVAILABLE");
+        System.out.println("9. Change vehicle status to MAINTENANCE REQUIRED");
         System.out.print("Select an option: ");
 
         int opt = Integer.parseInt(scanner.nextLine());
+        int vehicleId;
+        int vId;
 
         switch (opt) {
             case 1:
@@ -136,6 +141,43 @@ public class Main {
                 }
                 break;
             case 7:
+                System.out.print("Enter Vehicle ID to register maintenance: ");
+                vId = Integer.parseInt(scanner.nextLine());
+                Vehicle vToUpdate = null;
+                try {
+                    vToUpdate = vehicleService.getVehicleById(vId);
+                    vToUpdate.setId_vehicle(vId);
+                } catch (VehicleException e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
+
+
+                Maintenance m = new Maintenance(null, null, 0, null);
+                System.out.println("Enter Maintenance Date like this: (YYYY-MM-DD): ");
+                m.setDate(LocalDate.parse(scanner.nextLine()));
+                System.out.print("Enter Description: ");
+                m.setDescription(scanner.nextLine());
+                System.out.print("Enter Cost: ");
+                m.setCost(Double.parseDouble(scanner.nextLine()));
+
+                vehicleService.registerMaintenance(vToUpdate, m);
+                System.out.println("✅ Maintenance registered successfully.");
+                break;
+            case 8:
+                System.out.print("Enter Vehicle ID to change status to AVAILABLE: ");
+                vehicleId = Integer.parseInt(scanner.nextLine());
+
+                Vehicle vehicle = vehicleService.getVehicleById(vehicleId);
+                vehicleService.changeStatus(vehicle, VehicleStatus.AVAILABLE);
+
+                break;
+            case 9:
+                System.out.print("Enter Vehicle ID to change status to NEED MAINTENANCE: ");
+                vehicleId = Integer.parseInt(scanner.nextLine());
+
+                Vehicle vehicleNewStatus = vehicleService.getVehicleById(vehicleId);
+                vehicleService.changeStatus(vehicleNewStatus, VehicleStatus.MAINTENANCE_REQUIRED);
                 break;
             default:
                 System.out.println("⚠️ Invalid vehicle option.");
