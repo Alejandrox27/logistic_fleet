@@ -16,7 +16,7 @@ public class RouteMapVisualizer {
     /*NOTE: Primero se creó una versión 1.0 en la cual se sentaban las bases creando un
     * grafo visual, sin embargo era muy simple y tenia algunos errores como la imposibilidad
     * de interactuar con los nodos, hacer zoom o que el grafo se quedaba paralizado, se uso
-    * ayuda de Claude para poder mejorarlo creando una V2.0
+    * ayuda de Claude para poder mejorarlo creando una V2.0 usando Java Swing puro
     * */
 
     // ── Posición y velocidad de cada nodo para el layout de fuerza ──────────

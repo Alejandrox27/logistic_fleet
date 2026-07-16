@@ -254,7 +254,7 @@ public class Main {
         // 3. Estructura auxiliar para no duplicar Ciudades y asignarles un ID único
         // Mapea el nombre de la ciudad (String) -> Al objeto Ciudad (City)
         java.util.Map<String, City> uniqueCities = new java.util.HashMap<>();
-        int cityIdCounter = 1;
+        int cityIdCounter = 0;
 
         // 4. Recorremos las rutas de la base de datos para armar el Grafo
         for (Route route : dbRoutes) {
