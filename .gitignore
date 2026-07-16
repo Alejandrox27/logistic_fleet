@@ -41,3 +41,5 @@ build/
 .idea/
 .settings/
 *.log
+
+config.properties

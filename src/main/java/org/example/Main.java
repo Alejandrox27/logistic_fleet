@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    // Instanciamos los servicios
+    // Se instancian los servicios
     private static final VehicleService vehicleService = new VehicleService();
     private static final DriverService driverService = new DriverService();
     private static final RouteService routeService = new RouteService();
