@@ -31,6 +31,10 @@ public class CityGraph {
         addRoad(cityB, cityA, distance, idRoadB);
     }
 
+    public List<City> getCities () {
+        return new ArrayList<>(adjacencyList.keySet());
+    }
+
     //GETTER
     public Map<City, List<Road>> getAdjacencyList() {
         return adjacencyList;

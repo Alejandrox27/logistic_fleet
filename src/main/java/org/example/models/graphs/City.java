@@ -20,8 +20,8 @@ public class City {
     }
 
     @Override
-    public boolean equals(Object o) {
-        // 1. Si son exactamente el mismo objeto en memoria, son iguales (Reflexividad)
+    public boolean equals(Object o) { // (Relación de equivalencia)
+        // 1. Si son exactamente el mismo objeto en memoria, son iguales (REFLEXIVIDAD)
         if (this == o) return true;
 
         // 2. Si el otro objeto es nulo o ni siquiera es una Ciudad, no son iguales
@@ -32,6 +32,13 @@ public class City {
 
         // 4. Dos ciudades son la misma SI Y SOLO SI tienen el mismo ID
         return idCity == city.getIdCity();
+        // Si A.idCity == B.idCity
+        // entonces B.idCity == A.idCity SIMETRíA
+
+        // Si A.idCity == B.idCity  y  B.idCity == C.idCity
+        // entonces A.idCity == C.idCity  (TRANSITIVO en igualdad de enteros)
+
+        // Aquí se cumple una relación de equivalencia por las definiciones explicadas.
     }
 
     @Override
