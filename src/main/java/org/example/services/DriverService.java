@@ -82,7 +82,7 @@ public class DriverService implements IDriverService{
                             ": the Expiry date can not be before the issue date");
                 }
 
-                // Validación C: Licencia no vencida (Opcional, según tu lógica de negocio)
+                // Validación C: Licencia no vencida
                 if (lic.getExpiryDate().isBefore(LocalDate.now())) {
                     System.out.println("Warning: The license " + lic.getCategory() + " is already expired.");
                 }

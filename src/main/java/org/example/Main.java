@@ -1,7 +1,5 @@
 package org.example;
 
-import org.example.Exceptions.DriverExceptions.DriverException;
-import org.example.Exceptions.RouteException.RouteException;
 import org.example.Exceptions.VehicleExceptions.VehicleException;
 import org.example.models.*;
 import org.example.models.dto.*;
