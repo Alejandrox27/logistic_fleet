@@ -3,6 +3,7 @@ package org.example;
 import org.example.Exceptions.VehicleExceptions.VehicleException;
 import org.example.models.*;
 import org.example.models.dto.*;
+import org.example.models.algorithms.DijkstraAlgorithm;
 import org.example.models.graphs.City;
 import org.example.models.graphs.CityGraph;
 import org.example.models.views.RouteMapVisualizer;
@@ -212,6 +213,7 @@ public class Main {
         System.out.println("1. View All Routes");
         System.out.println("2. Efficiency Report");
         System.out.println("3. 🌐 VIEW VISUAL ROUTE MAP (GraphStream)");
+        System.out.println("4. 🛣️ FIND SHORTEST ROUTE (Dijkstra Algorithm)");
         System.out.print("Select an option: ");
 
         int opt = Integer.parseInt(scanner.nextLine());
@@ -232,6 +234,9 @@ public class Main {
                 } catch (Exception e) {
                     System.out.println("error durante la carga de datos");
                 }
+                break;
+            case 4:
+                routeService.findShortestRoute(scanner);
                 break;
 
             default:
@@ -255,7 +260,7 @@ public class Main {
         CityGraph cityGraph = new CityGraph();
 
         try {
-            cityGraph = loadDbCityRoads();
+            cityGraph = routeService.loadDbCityRoads();
         } catch (Exception e) {
             System.out.println("No se pudo cargar la base de datos");
         }
@@ -266,47 +271,5 @@ public class Main {
         visualizer.drawGraph(cityGraph);
     }
 
-    // --- METODO PARA CARGAR CityGraph DESDE LA BASE DE DATOS ---
-    private static CityGraph loadDbCityRoads () throws Exception {
-        List<Route> dbRoutes = routeService.getAllRoutes();
 
-        if (dbRoutes.isEmpty()) {
-            throw new Exception("La base de datos esta vacia, no tiene datos de rutas");
-        }
-
-        // 2. Instanciamos nuestro modelo matemático del Grafo
-        CityGraph cityGraph = new CityGraph();
-
-        // 3. Estructura auxiliar para no duplicar Ciudades y asignarles un ID único
-        // Mapea el nombre de la ciudad (String) -> Al objeto Ciudad (City)
-        java.util.Map<String, City> uniqueCities = new java.util.HashMap<>();
-        int cityIdCounter = 0;
-
-        // 4. Recorremos las rutas de la base de datos para armar el Grafo
-        for (Route route : dbRoutes) {
-            String originName = route.getOrigin();
-            String destName = route.getDestination();
-            double distance = route.getDistance();
-            int routeId = route.getId_route();
-
-            // Si la ciudad origen no ha sido creada en memoria, la creamos y le asignamos un ID
-            if (!uniqueCities.containsKey(originName)) {
-                uniqueCities.put(originName, new City(cityIdCounter++, originName));
-            }
-            // Lo mismo para la ciudad destino
-            if (!uniqueCities.containsKey(destName)) {
-                uniqueCities.put(destName, new City(cityIdCounter++, destName));
-            }
-
-            // Obtenemos los objetos City correspondientes
-            City originCity = uniqueCities.get(originName);
-            City destinationCity = uniqueCities.get(destName);
-
-            // Agregamos la conexión bidireccional (Ida y Vuelta) al Grafo Matemático
-            // Usamos el id de la ruta para identificar la arista
-            cityGraph.addTwoWayRoad(originCity, destinationCity, distance, routeId, routeId + 1000);
-        }
-
-        return cityGraph;
-    }
 }
