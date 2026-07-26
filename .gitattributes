@@ -1,0 +1,4 @@
+# Forzar LF en scripts de shell (deben ejecutarse en Linux dentro de Docker)
+*.sh text eol=lf
+
+# El resto usa el comportamiento por defecto del sistema

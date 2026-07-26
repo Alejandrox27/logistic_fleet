@@ -1,0 +1,36 @@
+# ── Archivos que Docker NO debe copiar al contenedor ──────────
+
+# Credenciales (¡NUNCA al contenedor ni a GitHub!)
+config.properties
+.env
+
+# Código compilado local (el contenedor compila desde cero)
+target/
+
+# Archivos de IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+
+# Git
+.git/
+.gitignore
+
+# Archivos de OS
+.DS_Store
+Thumbs.db
+
+# Archivos LaTeX (no son parte del programa)
+*.tex
+*.bib
+*.pdf
+*.aux
+*.log
+*.out
+*.toc
+00Figuras/
+latex_proyecto/

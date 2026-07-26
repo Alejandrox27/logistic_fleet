@@ -43,3 +43,6 @@ build/
 *.log
 
 config.properties
+
+# Docker — credenciales reales (el template .env.example sí se sube)
+.env

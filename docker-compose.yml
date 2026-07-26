@@ -1,0 +1,87 @@
+# ══════════════════════════════════════════════════════════════
+#  docker-compose.yml — Logistics Fleet
+#
+#  Levanta dos servicios:
+#    db  → MySQL 8.0 con la BD creada y poblada automáticamente
+#    app → Aplicación Java 25 compilada y lista para usar
+#
+#  Uso:
+#    docker compose up --build       (primera vez)
+#    docker compose up               (siguientes veces)
+#    docker compose down -v          (eliminar todo, incluida la BD)
+# ══════════════════════════════════════════════════════════════
+services:
+
+  # ── Base de datos MySQL 8.0 ───────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: logistics_mysql
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootsecret}
+      MYSQL_DATABASE:      ${MYSQL_DATABASE:-logistics_fleet_db}
+      MYSQL_USER:          ${MYSQL_USER:-logistics_user}
+      MYSQL_PASSWORD:      ${MYSQL_PASSWORD:-logistics123}
+
+    ports:
+      # Puerto 3307 en tu máquina → 3306 en el contenedor.
+      # Usamos 3307 para no chocar con una instalación local de MySQL.
+      - "3307:3306"
+
+    volumes:
+      # Persistencia de datos: la BD sobrevive al "docker compose down"
+      - mysql_data:/var/lib/mysql
+
+      # Script SQL que crea las tablas y los datos de ejemplo.
+      # MySQL ejecuta automáticamente todo lo que esté en esta carpeta
+      # la PRIMERA vez que levanta (si el volumen está vacío).
+      - ./src/main/java/org/example/db/logistics_fleet_db.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin", "ping",
+          "-h", "localhost",
+          "-u", "root",
+          "--password=${MYSQL_ROOT_PASSWORD:-rootsecret}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s   # MySQL 8 tarda en iniciar la primera vez
+
+  # ── Aplicación Java 25 ────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: logistics_app
+    restart: "no"         # No reiniciar automáticamente (es una app de consola)
+
+    # La app depende de que MySQL esté SALUDABLE (no solo levantado)
+    depends_on:
+      db:
+        condition: service_healthy
+
+    # stdin_open + tty permiten que el Scanner de Java reciba input del terminal.
+    # Equivale a "docker run -it"
+    stdin_open: true
+    tty: true
+
+    environment:
+      DB_HOST:  db          # Nombre del servicio MySQL dentro de la red Docker
+      DB_PORT:  3306
+      DB_NAME:  ${MYSQL_DATABASE:-logistics_fleet_db}
+      DB_USER:  ${MYSQL_USER:-logistics_user}
+      DB_PASS:  ${MYSQL_PASSWORD:-logistics123}
+
+# ── Red interna ───────────────────────────────────────────────
+# Docker Compose crea una red privada automáticamente.
+# La app se conecta a MySQL usando el nombre "db" (no localhost).
+
+# ── Volúmenes ─────────────────────────────────────────────────
+volumes:
+  mysql_data:
+    name: logistics_fleet_mysql_data
