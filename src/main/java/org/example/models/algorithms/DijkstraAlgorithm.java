@@ -67,9 +67,9 @@ public class DijkstraAlgorithm {
             double currentDist = current[0];
             City currentCity = cityById.get((int) current[1]);
 
-            // Protección: si la ciudad no existe en el mapa o ya la visitamos, saltamos.
+            // si la ciudad no existe en el mapa o ya la visitamos, saltamos.
             // Puede pasar que una misma ciudad entre varias veces a la cola
-            // (cuando se relaja más de una vez). La primera vez que la sacamos
+            // La primera vez que la sacamos
             // es con la distancia óptima; las siguientes se ignoran aquí.
             if (currentCity == null || visited.contains(currentCity)) {
                 continue;
