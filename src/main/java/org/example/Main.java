@@ -207,7 +207,7 @@ public class Main {
     }
 
     // --- ROUTE MENU ---
-    private static void routeMenu(Scanner scanner) {
+    private static void routeMenu(Scanner scanner) throws Exception {
         System.out.println("\n--- ROUTE MENU ---");
         System.out.println("1. View All Routes");
         System.out.println("2. Efficiency Report");
@@ -227,15 +227,20 @@ public class Main {
                 efficiency.forEach(e -> System.out.println(e.toString()));
                 break;
             case 3:
-                visualizeDatabaseGraph(); // Metodo para mostrar el grafo de las rutas
+                try {
+                    visualizeDatabaseGraph();
+                } catch (Exception e) {
+                    System.out.println("error durante la carga de datos");
+                }
                 break;
+
             default:
                 System.out.println("⚠️ Invalid route option.");
         }
     }
 
-    // --- MÉTODO PARA CARGAR EL GRAFO DESDE LA BASE DE DATOS Y MOSTRARLO ---
-    private static void visualizeDatabaseGraph() {
+    // --- MÉTODO PARA MOSTRAR EL GRAFO ---
+    private static void visualizeDatabaseGraph() throws Exception {
         System.out.println("\n🌐 Fetching routes from database and generating graph...");
 
         // 1. Obtenemos la lista de rutas reales de la base de datos
@@ -244,6 +249,29 @@ public class Main {
         if (dbRoutes.isEmpty()) {
             System.out.println("⚠️ No routes found in the database to build a map.");
             return;
+        }
+
+        // 2. Instanciamos nuestro modelo matemático del Grafo
+        CityGraph cityGraph = new CityGraph();
+
+        try {
+            cityGraph = loadDbCityRoads();
+        } catch (Exception e) {
+            System.out.println("No se pudo cargar la base de datos");
+        }
+
+        // 5. ¡Llamamos a la Vista para dibujar el Grafo interactivo!
+        System.out.println("🎨 Launching visual map window...");
+        RouteMapVisualizer visualizer = new RouteMapVisualizer();
+        visualizer.drawGraph(cityGraph);
+    }
+
+    // --- METODO PARA CARGAR CityGraph DESDE LA BASE DE DATOS ---
+    private static CityGraph loadDbCityRoads () throws Exception {
+        List<Route> dbRoutes = routeService.getAllRoutes();
+
+        if (dbRoutes.isEmpty()) {
+            throw new Exception("La base de datos esta vacia, no tiene datos de rutas");
         }
 
         // 2. Instanciamos nuestro modelo matemático del Grafo
@@ -279,9 +307,6 @@ public class Main {
             cityGraph.addTwoWayRoad(originCity, destinationCity, distance, routeId, routeId + 1000);
         }
 
-        // 5. ¡Llamamos a la Vista para dibujar el Grafo interactivo!
-        System.out.println("🎨 Launching visual map window...");
-        RouteMapVisualizer visualizer = new RouteMapVisualizer();
-        visualizer.drawGraph(cityGraph);
+        return cityGraph;
     }
 }
