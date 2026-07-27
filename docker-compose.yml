@@ -18,6 +18,10 @@ services:
     container_name: logistics_mysql
     restart: unless-stopped
 
+    # Hacer que MySQL ignore mayúsculas/minúsculas en nombres de tablas,
+    # igual que en Windows. Sin esto, "Vehicles" ≠ "vehicles" en Linux.
+    command: --lower-case-table-names=1 --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootsecret}
       MYSQL_DATABASE:      ${MYSQL_DATABASE:-logistics_fleet_db}
