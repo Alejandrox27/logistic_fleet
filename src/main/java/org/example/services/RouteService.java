@@ -111,7 +111,7 @@ public class RouteService implements IRouteService {
     // --- MÉTODO PARA ENCONTRAR LA RUTA MÁS CORTA (DIJKSTRA) ---
     @Override
     public void findShortestRoute(Scanner scanner) {
-        System.out.println("\n🛣️ SHORTEST ROUTE FINDER (Dijkstra Algorithm)");
+        System.out.println("\n SHORTEST ROUTE FINDER (Dijkstra Algorithm)");
         System.out.println("================================================");
 
         // 1. Cargar el grafo desde la base de datos
@@ -173,11 +173,11 @@ public class RouteService implements IRouteService {
             return;
         }
 
-        System.out.println("\n✅ SHORTEST ROUTE FOUND!");
+        System.out.println("\n SHORTEST ROUTE FOUND");
         System.out.println("════════════════════════════════════════════");
-        System.out.println("📏 Total distance: " + result.totalDistance() + " km");
-        System.out.println("🔢 Number of stops: " + (result.path().size() - 1));
-        System.out.println("\n🗺️ Route:");
+        System.out.println(" Total distance: " + result.totalDistance() + " km");
+        System.out.println(" Number of stops: " + (result.path().size() - 1));
+        System.out.println("\n🗺 Route:");
 
         List<City> path = result.path();
         for (int i = 0; i < path.size(); i++) {
