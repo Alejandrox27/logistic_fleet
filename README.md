@@ -190,34 +190,29 @@ logistic_fleet/
 
 ### ¿Cómo se utilizó?
 
-Para el desarrollo de este proyecto y la preparación del documento se utilizó la herramienta de inteligencia artificial Claude (Anthropic) como apoyo en la redacción, estructuración formal del texto, revisión de reglas y depuración técnica del código. El contenido conceptual, el análisis del dominio, la problemática identificada y el diseño del modelo de base de datos fueron desarrollados en su totalidad por los integrantes del grupo con base en su conocimiento directo de la ORI-UNAL y el curso de bases de datos.
+Para el desarrollo de este proyecto y la preparación del documento se utilizó la herramienta de inteligencia artificial Claude (Anthropic) como apoyo en la redacción, estructuración formal del texto, revisión de reglas y depuración técnica del código. El contenido conceptual, el análisis del dominio, la problemática identificada, el diseño del modelo de base de datos y el código en Java fueron desarrollados en su totalidad por el autor de este repositorio para el proyecto de logistica para Sistema de optimización logística basado en estructuras discretas
 
 A continuación, se detalla el uso específico de la herramienta en cada etapa del trabajo:
 
 #### 1. Redacción y estructuración formal del texto
-Se utilizó la IA exclusivamente como apoyo para mejorar la fluidez, la coherencia y la formalidad sintáctica de las ideas planteadas por el autor. El prompt utilizado fue el siguiente:
+Para poder tener un documento más limpio y entendible, se pidió a la IA que, en base a un diseño primario, ayudara con la redacción y estructura
+del documento.
 
-> *"Voy a explicar con mis propias palabras y me me ayudas a redactar: La organización de relaciones exteriores ORI de la UNAL es la entidad encargada de la relación profesional con instituciones fuera. Se incluyen convocatorias para pasantías, intercambios, etc. Es una parte importante porque le da visibilidad a la universidad y oportunidades a los estudiantes. El problema es que esta información no se puede ver por problemas que las páginas están caídas y que toda esta información se comparte particionada en correos individuales o en un Excel que ni siquiera abre. La idea es crear una base de datos con toda esta información unificada y de fácil acceso para que los estudiantes puedan ver a qué pueden aplicar sin complicarse."*
+#### 2. Ayuda para entender conceptos y guia
+Para algunas partes del proyecto se le pidió ayuda a la IA para entender conceptos para avanzar con el proyecto, por ejemplo
+para entender el algoritmo de Dijkstra y poder códificarlo. Puesto que hubo algunas complicaciones se pidió que fuera una guía
+para poder proseguir con el código.
 
-A partir de esta explicación en palabras propias, la IA ayudó únicamente a mejorar la presentación del texto, conservando en su totalidad las ideas, el diagnóstico y la solución propuesta.
-
-#### 2. Formulación y validación de reglas de negocio
-Por otro lado, para lograr mayor precisión en la definición de restricciones del sistema, se consultaron mejoras y correcciones conceptuales utilizando la siguiente estructura de prompt:
-
-- `*Contexto del proyecto* "De acuerdo a este contexto, las siguientes reglas se justifican como restricciones para el buen funcionamiento del sistema" *Reglas*`
-
-#### 3. Depuración de código SQL y apoyo en la traducción a MySQL
-En la fase de implementación técnica y construcción del script de la base de datos, la herramienta sirvió como soporte para las siguientes tareas:
-
-- **Depuración de código DDL:** Asistencia en la identificación y corrección de errores sintácticos y lógicos en el script SQL, garantizando el correcto funcionamiento de las restricciones de integridad (`CHECK`, `FOREIGN KEY`) y la lógica de validación previa en los disparadores (*triggers*).
-- **Traducción y adaptación entre motores:** Apoyo técnico en el proceso de traducción de la lógica desde PostgreSQL hacia MySQL. Esto incluyó la adaptación de los tipos de datos (como el ajuste de los enumerados `ENUM`) y la reestructuración sintáctica de funciones o lógica de control hacia disparadores (*triggers*) mediante bloques `DELIMITER` en MySQL.
+#### 3. Depuración de código SQL y Java
+Se usó la IA para el apoyo en la parte de identificar errores del código, y también para la organización y mejora del mismo,
+esto para tener un código más limpio y legible, pero la lógica fue diseñada por completo por el autor del repositorio.
 
 #### 4. Ayuda al momento de usar Docker para contenerizar el proyecto
 Al final del proyecto, se optó por utilizar Docker para que la instalación y prueba del proyecto sea mucho más sencillo, sin embargo, no había trabajado antes con Docker, por esta razón se usó la IA para la ayuda de la configuración de este.
 
 Para esto, se le pidió a la IA que modificara la carpeta del proyecto para adaptarla a Docker, de esta manera es más fácil para quien vaya a probar el proyecto.
 
-*Cabe destacar que el uso de la IA se limitó a un rol consultivo y de soporte técnico; todo el texto redactado y el código SQL generado fue revisado, probado y validado por los integrantes del proyecto para asegurar el cumplimiento estricto de las reglas de negocio del proyecto.*
+*Cabe destacar que el uso de la IA se limitó a un rol consultivo y de soporte técnico; todo el texto redactado y el código SQL generado fue revisado, probado y validado por el autor del proyecto (Didier Mejia)*
 
 ---
 
