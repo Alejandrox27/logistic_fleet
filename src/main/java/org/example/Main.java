@@ -246,6 +246,14 @@ public class Main {
 
     // --- MÉTODO PARA MOSTRAR EL GRAFO ---
     private static void visualizeDatabaseGraph() throws Exception {
+        // Verificar si hay entorno gráfico disponible (no hay en Docker)
+        if (java.awt.GraphicsEnvironment.isHeadless()) {
+            System.out.println("\n⚠️ La visualización del grafo requiere un entorno gráfico (pantalla).");
+            System.out.println("   En Docker no hay monitor disponible.");
+            System.out.println("   Para ver el grafo, ejecuta el programa directamente desde IntelliJ IDEA.");
+            return;
+        }
+
         System.out.println("\n🌐 Fetching routes from database and generating graph...");
 
         // 1. Obtenemos la lista de rutas reales de la base de datos
@@ -260,12 +268,13 @@ public class Main {
         CityGraph cityGraph = new CityGraph();
 
         try {
-            cityGraph = routeService.loadDbCityRoads();
+            cityGraph = loadDbCityRoads();
         } catch (Exception e) {
             System.out.println("No se pudo cargar la base de datos");
+            return;
         }
 
-        // 5. ¡Llamamos a la Vista para dibujar el Grafo interactivo!
+        // 3. ¡Llamamos a la Vista para dibujar el Grafo interactivo!
         System.out.println("🎨 Launching visual map window...");
         RouteMapVisualizer visualizer = new RouteMapVisualizer();
         visualizer.drawGraph(cityGraph);
