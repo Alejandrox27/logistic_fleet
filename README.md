@@ -131,17 +131,6 @@ Deberías ver `logistics_mysql` con estado **healthy**.
 
 ---
 
-## 📋 Comandos útiles de Docker
-
-| Acción | Comando |
-|---|---|
-| Iniciar la base de datos | `docker compose up db -d` |
-| Ver estado de MySQL | `docker compose ps` |
-| Detener la base de datos | `docker compose down` |
-| Borrar todo y empezar de cero | `docker compose down -v` |
-| Conectar MySQL Workbench | Host: `127.0.0.1`, Puerto: `3307`, User: `logistics_user`, Pass: `logistics123` |
-
----
 
 ## 📁 Estructura del proyecto
 
