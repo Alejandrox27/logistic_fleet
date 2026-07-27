@@ -1,0 +1,13 @@
+# ── Credenciales de conexión a la base de datos ──────────────
+# Copia este archivo como "config.properties" y ajusta los valores.
+# El archivo "config.properties" NO se sube a GitHub (está en .gitignore).
+
+# Si usas Docker (recomendado): deja estos valores tal cual.
+# Si usas MySQL local instalado en tu máquina: cambia HOST a localhost,
+# PORT a 3306, USER a root y PASS a tu contraseña de MySQL.
+
+db.HOST=localhost
+db.PORT=3307
+db.NAME=logistics_fleet_db
+db.USER=logistics_user
+db.PASS=logistics123
