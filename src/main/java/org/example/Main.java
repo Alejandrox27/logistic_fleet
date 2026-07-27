@@ -268,7 +268,7 @@ public class Main {
         CityGraph cityGraph = new CityGraph();
 
         try {
-            cityGraph = loadDbCityRoads();
+            cityGraph = routeService.loadDbCityRoads();
         } catch (Exception e) {
             System.out.println("No se pudo cargar la base de datos");
             return;
