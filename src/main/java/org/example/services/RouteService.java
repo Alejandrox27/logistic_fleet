@@ -17,8 +17,6 @@ import org.example.models.dto.DriverFatigueDTO;
 import org.example.models.dto.EfficiencyReportDTO;
 import org.example.models.graphs.City;
 import org.example.models.graphs.CityGraph;
-import org.example.services.RouteService;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -192,7 +190,7 @@ public class RouteService implements IRouteService {
         System.out.println("════════════════════════════════════════════");
     }
 
-    // --- METODO PARA CARGAR CityGraph DESDE LA BASE DE DATOS ---
+    // --- MÉTODO PARA CARGAR EL GRAFO DESDE LA BASE DE DATOS ---
     @Override
     public CityGraph loadDbCityRoads () throws Exception {
         RouteService routeService = new RouteService();
