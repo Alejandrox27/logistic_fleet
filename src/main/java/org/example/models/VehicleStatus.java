@@ -7,5 +7,7 @@ public enum VehicleStatus {
 
     MAINTENANCE,
 
-    MAINTENANCE_REQUIRED
+    MAINTENANCE_REQUIRED,
+
+    RESTING
 }
