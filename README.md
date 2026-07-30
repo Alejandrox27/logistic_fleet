@@ -1,4 +1,4 @@
-# 🚛 Logistics Fleet
+# Logistics Fleet
 
 Sistema de gestión de flotas de transporte desarrollado en **Java 25** con **MySQL 8.0** para el curso de **Matemáticas Discretas I** de la Universidad Nacional de Colombia.
 
@@ -8,29 +8,27 @@ El sistema modela la red vial colombiana como un **grafo ponderado**, implementa
 
 ## 📸 Características
 
-- 🗺️ **Grafo interactivo** — Visualización de la red de ciudades con algoritmo de fuerzas (Java Swing)
-- 🛣️ **Ruta más corta (Dijkstra)** — Calcula el camino óptimo entre cualquier par de ciudades
-- 🚚 **Gestión de vehículos** — CRUD, reportes de riesgo, costos operativos, ranking por consumo
-- 👤 **Gestión de conductores** — Control de fatiga, licencias, conductores inactivos
-- 📊 **Reportes analíticos** — Eficiencia, versatilidad, marcas más derrochadoras
-- 🗄️ **Base de datos MySQL** — 6 tablas con datos reales de ciudades colombianas
+- **Grafo interactivo** — Visualización de la red de ciudades con algoritmo de fuerzas (Java Swing)
+- **Ruta más corta (Dijkstra)** — Calcula el camino óptimo entre cualquier par de ciudades
+- **Gestión de vehículos** — CRUD, reportes de riesgo, costos operativos, ranking por consumo
+- **Gestión de conductores** — Control de fatiga, licencias, conductores inactivos
+- **Reportes analíticos** — Eficiencia, versatilidad, marcas más derrochadoras
+- **Base de datos MySQL** — 6 tablas con datos reales de ciudades colombianas
 
 ---
 
-## ✅ Requisitos previos
+## Requisitos previos
 
-Necesitas instalar estas **2 herramientas** (todo lo demás viene incluido):
+Instalación de las herramientas necesarias:
 
 | Herramienta | Para qué | Descargar |
 |---|---|---|
 | **Docker Desktop** | Corre la base de datos MySQL sin que instales MySQL | [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop) |
-| **IntelliJ IDEA Community** | Ejecuta el programa Java con la interfaz gráfica del grafo | [jetbrains.com/idea/download](https://www.jetbrains.com/idea/download/) (elige **Community**, es gratis) |
-
-> **Nota:** IntelliJ IDEA descargará automáticamente Java 25 (JDK) la primera vez que abras el proyecto. No necesitas instalar Java por separado.
+| **IntelliJ IDEA Community** | Ejecuta el programa Java con la interfaz gráfica del grafo | [jetbrains.com/idea/download](https://www.jetbrains.com/idea/download/) (**Community**) |
 
 ---
 
-## 🚀 Instalación paso a paso
+## Instalación
 
 ### 1. Clonar el repositorio
 
@@ -49,27 +47,17 @@ Copy-Item config.properties.example config.properties
 cp config.properties.example config.properties
 ```
 
-> El archivo `config.properties` ya viene con los valores correctos para Docker. No necesitas cambiar nada.
+> El archivo `config.properties` ya viene con los valores correctos para Docker.
 
 ### 3. Levantar la base de datos con Docker
 
-Abre una terminal (PowerShell, CMD o Git Bash) en la carpeta del proyecto y ejecuta:
+Abrir una terminal (PowerShell, CMD o Git Bash) en la carpeta del proyecto y ejecutar:
 
 ```bash
 docker compose up db -d
 ```
 
-Esto descarga MySQL 8.0, crea la base de datos `logistics_fleet_db`, carga las 6 tablas y los datos de ejemplo. Solo tarda la primera vez (~1 minuto).
-
-> **`-d`** significa "en segundo plano" (detached). Docker seguirá corriendo MySQL silenciosamente.
-
-Para verificar que MySQL está corriendo:
-
-```bash
-docker compose ps
-```
-
-Deberías ver `logistics_mysql` con estado **healthy**.
+Esto descarga MySQL 8.0, crea la base de datos `logistics_fleet_db`, carga las 6 tablas y los datos de ejemplo.
 
 ### 4. Abrir el proyecto en IntelliJ IDEA
 
@@ -84,7 +72,7 @@ Deberías ver `logistics_mysql` con estado **healthy**.
 
 ### 5. Ejecutar el programa
 
-1. En el panel izquierdo de IntelliJ, navega a:
+1. En el panel izquierdo de IntelliJ:
    ```
    src → main → java → org → example → Main.java
    ```
@@ -106,8 +94,6 @@ Deberías ver `logistics_mysql` con estado **healthy**.
 
 ---
 
-## 🎮 Qué puedes hacer
-
 ### Menú de Vehículos (opción 1)
 - Ver todos los vehículos
 - Reporte de riesgo de mantenimiento (bloquea vehículos automáticamente)
@@ -123,16 +109,16 @@ Deberías ver `logistics_mysql` con estado **healthy**.
 ### Menú de Rutas (opción 3)
 - Ver todas las rutas
 - Reporte de eficiencia
-- **🌐 Ver grafo visual de ciudades** — Abre una ventana interactiva con:
+- **Ver grafo visual de ciudades** — Abre una ventana interactiva con:
   - Zoom con rueda del ratón
   - Arrastrar nodos individuales
   - Paneo con clic y arrastre del fondo
-- **🛣️ Ruta más corta (Dijkstra)** — Muestra todas las ciudades y calcula el camino óptimo
+- **Ruta más corta (Dijkstra)** — Muestra todas las ciudades y calcula el camino óptimo
 
 ---
 
 
-## 📁 Estructura del proyecto
+## Estructura del proyecto
 
 ```
 logistic_fleet/
@@ -161,7 +147,7 @@ logistic_fleet/
 
 ---
 
-## 🧮 Matemáticas Discretas aplicadas
+## Matemáticas Discretas aplicadas
 
 | Concepto | Dónde se aplica |
 |---|---|
@@ -174,35 +160,3 @@ logistic_fleet/
 | **Combinatoria** | `COUNT(DISTINCT destination)` en reportes |
 
 ---
-
-## 🤖 Declaración sobre el uso de Inteligencia Artificial
-
-### ¿Cómo se utilizó?
-
-Para el desarrollo de este proyecto y la preparación del documento se utilizó la herramienta de inteligencia artificial Claude (Anthropic) como apoyo en la redacción, estructuración formal del texto, revisión de reglas y depuración técnica del código. El contenido conceptual, el análisis del dominio, la problemática identificada, el diseño del modelo de base de datos y el código en Java fueron desarrollados en su totalidad por el autor de este repositorio para el proyecto de logistica para Sistema de optimización logística basado en estructuras discretas
-
-A continuación, se detalla el uso específico de la herramienta en cada etapa del trabajo:
-
-#### 1. Redacción y estructuración formal del texto
-Para poder tener un documento más limpio y entendible, se pidió a la IA que, en base a un diseño primario, ayudara con la redacción y estructura
-del documento.
-
-#### 2. Ayuda para entender conceptos y guia
-Para algunas partes del proyecto se le pidió ayuda a la IA para entender conceptos para avanzar con el proyecto, por ejemplo
-para entender el algoritmo de Dijkstra y poder códificarlo. Puesto que hubo algunas complicaciones se pidió que fuera una guía
-para poder proseguir con el código.
-
-#### 3. Depuración de código SQL y Java
-Se usó la IA para el apoyo en la parte de identificar errores del código, y también para la organización y mejora del mismo,
-esto para tener un código más limpio y legible, pero la lógica fue diseñada por completo por el autor del repositorio.
-
-#### 4. Ayuda al momento de usar Docker para contenerizar el proyecto
-Al final del proyecto, se optó por utilizar Docker para que la instalación y prueba del proyecto sea mucho más sencillo, sin embargo, no había trabajado antes con Docker, por esta razón se usó la IA para la ayuda de la configuración de este.
-
-Para esto, se le pidió a la IA que modificara la carpeta del proyecto para adaptarla a Docker, de esta manera es más fácil para quien vaya a probar el proyecto.
-
-*Cabe destacar que el uso de la IA se limitó a un rol consultivo y de soporte técnico; todo el texto redactado y el código SQL generado fue revisado, probado y validado por el autor del proyecto (Didier Mejia)*
-
----
-
-**Universidad Nacional de Colombia** — Matemáticas Discretas I — 2026
