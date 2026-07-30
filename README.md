@@ -6,7 +6,7 @@ El sistema modela la red vial colombiana como un **grafo ponderado**, implementa
 
 ---
 
-## 📸 Características
+## Características
 
 - **Grafo interactivo** — Visualización de la red de ciudades con algoritmo de fuerzas (Java Swing)
 - **Ruta más corta (Dijkstra)** — Calcula el camino óptimo entre cualquier par de ciudades
